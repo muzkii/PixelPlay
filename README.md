@@ -11,26 +11,26 @@ Link to PWS : https://andriyo-averill-pixelplay.pbp.cs.ui.ac.id/
 
 #### -- How to Implement Everything in the Checklist --
 
-a. Creating a new project in Django
+1. Creating a new project in Django
 - Start by creating a new directory named `PixelPlay`, this is the name of my E-Commerce.
 - Create a *virtual environment* inside that directory with `python -m venv env` to simplify everything we will use in that environment (creating an isolated environment just for this application).
 - Create a new Django project by executing `django-admin startproject PixelPlay`.
 - Once the project is created, we move the directory to it with `cd PixelPlay`.
-b. Configure routing on the project to run the main application
+2.  Configure routing on the project to run the main application
 - Create an application named main in the project with `python manage.py startapp main`.
 - Configure the application in settings, by adding the string "main" to the **settings.py** file located in the `PixelPlay` project directory in the _INSTALLED_APPS_ list.
-c. Create a *Product* model in **models.py**
+3. Create a *Product* model in **models.py**
 - In the `main/models.py` directory, create a Product model with the requested `name`, `price`, and `description` attributes.
-d. Migrate the model to a Database
+4. Migrate the model to a Database
 - Once the model is complete, migrate the model to the database, using `python manage.py makemigrations` and `python manage.py migrate`.
-e. Creating a function in **views.py**
+5. Creating a function in **views.py**
 - Inside `main/views.py`, create a function that returns an HTML template.
-f. Creating an HTML template
+6. Creating an HTML template
 - Create a templates folder inside the *main* folder, then create an HTML file **main.html** inside it.
-g. Configure routing in **urls.py**
+7. Configure routing in **urls.py**
 - Create a **urls.py** file in the *main* folder, then add routing to map the functions from **views.py**.
 - Also add routing in **urls.py** in the project folder to connect the main application.
-h. Deploying to PWS Platform
+8. Deploying to PWS Platform
 - Log-in to the PWS page on https://pbp.cs.ui.ac.id
 - Click on `Create new Project` with the Project Name of `PixelPlay`, then `Create new Project`
 - Added my URL Deployment e.g. `andriyo-averill-PixelPlay.pbp.cs.ui.ac.id` in the _ALLOWED_HOST_ list on **settings.py** file 
