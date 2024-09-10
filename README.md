@@ -3,7 +3,7 @@
 
 An E-Commerce about Gaming Appliances created by Andriyo Averill Fahrezi with the ID of 2306172325.
 
-Link to PWS : 
+Link to PWS : https://andriyo-averill-pixelplay.pbp.cs.ui.ac.id/
 
 # Individual Assignment 2
 
