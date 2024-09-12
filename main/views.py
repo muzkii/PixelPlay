@@ -11,7 +11,7 @@ def show_main(request):
         'npm' : '2306172325',
         'name': 'Andriyo Averill Fahrezi',
         'class': 'KKI',
-        'product': products
+        'products': products
     }
 
     return render(request, "main.html", context)
@@ -24,7 +24,7 @@ def create_product(request):
             return redirect('main:show_main')
     else :
         form = ProductForm()
-        
+
     context = {
         'form': form
     }
