@@ -214,11 +214,11 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 
     def show_xml_by_id(request, id):
         product = Product.objects.get(pk=id)
-        return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
+        return HttpResponse(serializers.serialize('xml', [product]), content_type='application/xml')
 
     def show_json_by_id(request, id):
         product = Product.objects.get(pk=id)
-        return HttpResponse(serializers.serialize('json', product), content_type='application/json')
+        return HttpResponse(serializers.serialize('json', [product]), content_type='application/json')
     ```
 
 #### Create URL Routing For All Function Inside `views.py`
