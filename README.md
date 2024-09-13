@@ -254,9 +254,9 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
     The main reason of implementing a data delivery in a platform is to have end-to-end data driven approaches. Platforms need to interact with databases, users, and others (just like the diagram on Individual Assignment 2). These interactions require data to be moved 
     between different aspects of the system. By having data delivery we would ensure:
 
-- User requests like forms are properly handled
-- Data is synchronized across parts of system
-- Reports with the database would run perfectly
+    - User requests like forms are properly handled
+    - Data is synchronized across parts of system
+    - Reports with the database would run perfectly
 
 2. **Which is better, XML or JSON? Why is JSON more popular?**
 
@@ -266,8 +266,8 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 
     In Django, the `is_valid()` method checks if the data submitted through the form attaches to the validation defined in the form fields and to check whether the form has no errors. By using `is_valid()` we would ensure that:
 
-- All the required fields of the forms are filled in
-- Field types of the models are respected
+    - All the required fields of the forms are filled in
+    - Field types of the models are respected
 
     If the data is valid, then `is_valid()` would returns `True`, allowing the form data to be processed (in my case is to be saved to the database). Meanwhile, if it is invalid, it returns `False`, and maybe the form errors would be displayed to the user.
 
@@ -277,8 +277,8 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 
     Django has `csrf_token` or Cross-Site Request Forgery token) to protect forms from a CSRF attacks. A CSRF attack occur when a shady site tricks a user into submitting a request to another site where they are authenticated. Now without a CSRF token:
 
-- Attackers can perform unauthorized actions disguising as users, such as submitting forms
-- Data would be compromised along with security, leading to data theft or sysmtem compromise
+    - Attackers can perform unauthorized actions disguising as users, such as submitting forms
+    - Data would be compromised along with security, leading to data theft or sysmtem compromise
 
     An attacker can leverage all those stuffs if we do not implement `csrf_token`. The `csrf_token` ensures that the form submissions are coming from the autheticated user by generating a unique token that is verified on both the cliend and server sides.
 
