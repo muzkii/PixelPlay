@@ -64,15 +64,15 @@ class Product(models.Model):
 #### Creating a Form Input
 
 1. Create a file called `forms.py` in the `main` directory with contents as follow:
-```bash
-from django.forms import ModelForm
-from main.models import Product
+    ```bash
+    from django.forms import ModelForm
+    from main.models import Product
 
-class ProductForm(ModelForm):
-    class Meta:
-        model = Product
-        fields = ['name', 'price', 'description', 'category', 'stock', 'rating']
-```
+    class ProductForm(ModelForm):
+        class Meta:
+            model = Product
+            fields = ['name', 'price', 'description', 'category', 'stock', 'rating']
+    ```
 2. Edit the `views.py` file in the `main` directory to add these import statements:
     ```bash
     from django.shortcuts import render, redirect 
@@ -80,200 +80,211 @@ class ProductForm(ModelForm):
     from main.models import Product
     ```
 3. Create a function to add the database entries inside `views.py` file in the `main` directory with contents as follow:
-```bash
-def create_product(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST or None, request.FILES or None)
-        if form.is_valid():
-            form.save()
-            return redirect('main:show_main')
-    else :
-        form = ProductForm()
+    ```bash
+    def create_product(request):
+        if request.method == 'POST':
+            form = ProductForm(request.POST or None, request.FILES or None)
+            if form.is_valid():
+                form.save()
+                return redirect('main:show_main')
+        else :
+            form = ProductForm()
 
-    context = {
-        'form': form
-    }
+        context = {
+            'form': form
+        }
 
-    return render(request, "create_product.html", context)
-```
+        return render(request, "create_product.html", context)
+    ```
 4. Change the `show_main` function inside the `views.py` file to handle the products as follow:
-```bash
-def show_main(request):
-    products = Product.objects.all()
-    context = {
-        'npm' : '2306172325',
-        'name': 'Andriyo Averill Fahrezi',
-        'class': 'KKI',
-        'products': products
-    }
+    ```bash
+    def show_main(request):
+        products = Product.objects.all()
+        context = {
+            'npm' : '2306172325',
+            'name': 'Andriyo Averill Fahrezi',
+            'class': 'KKI',
+            'products': products
+        }
 
-    return render(request, "main.html", context)
-```
+        return render(request, "main.html", context)
+    ```
 5. Create a directory `templates` in the main directory and create an HTML file with the name base.html that acts as a skeleton for views. Fill in the file contents with:
-```bash
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block meta %} {% endblock meta %}
-  </head>
+    ```bash
+    {% load static %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {% block meta %} {% endblock meta %}
+    </head>
 
-  <body>
-    {% block content %} {% endblock content %}
-  </body>
-</html>
-```
+    <body>
+        {% block content %} {% endblock content %}
+    </body>
+    </html>
+    ```
 6. Add the folder `templates` by editing `settings.py` in the project directory e.g. `pixelplay` as follow:
-```bash
-... 
-{
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-...
-```
+    ```bash
+    ... 
+    {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [BASE_DIR / 'templates'],
+    ...
+    ```
 7. Implementing a database into the main page `main.html` so that it uses the `base.html` as the main templte and also `extends base.html` in the main directory
-```bash
- {% extends 'base.html' %}
- {% block content %}
- <h1>Pixel Play</h1>
+    ```bash
+    {% extends 'base.html' %}
+    {% block content %}
+    <h1>Pixel Play</h1>
 
- <h5>NPM: </h5>
- <p>{{ npm }}<p>
+    <h5>NPM: </h5>
+    <p>{{ npm }}<p>
 
- <h5>Name:</h5>
- <p>{{ name }}</p>
+    <h5>Name:</h5>
+    <p>{{ name }}</p>
 
- <h5>Class:</h5>
- <p>{{ class }}</p>
+    <h5>Class:</h5>
+    <p>{{ class }}</p>
 
-<h2>Our Gaming Products</h2>
+    <h2>Our Gaming Products</h2>
 
-{% if not products %}
-<p>There are no gaming products available at the moment.</p>
-{% else %}
-<table>
-  <tr>
-    <th>Product Name</th>
-    <th>Price</th>
-    <th>Description</th>
-    <th>Category</th>
-    <th>Stock</th>
-  </tr>
+    {% if not products %}
+    <p>There are no gaming products available at the moment.</p>
+    {% else %}
+    <table>
+    <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Stock</th>
+    </tr>
 
-  {% comment %} Looping melalui produk untuk menampilkannya di tabel {% endcomment %}
-  {% for product in products %}
-  <tr>
-    <td>{{ product.name }}</td>
-    <td>${{ product.price }}</td>
-    <td>{{ product.description }}</td>
-    <td>{{ product.category }}</td>
-    <td>{{ product.stock }}</td>
-  </tr>
-  {% endfor %}
-</table>
-{% endif %}
+    {% comment %} Looping melalui produk untuk menampilkannya di tabel {% endcomment %}
+    {% for product in products %}
+    <tr>
+        <td>{{ product.name }}</td>
+        <td>${{ product.price }}</td>
+        <td>{{ product.description }}</td>
+        <td>{{ product.category }}</td>
+        <td>{{ product.stock }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
 
-<br />
+    <br />
 
-<a href="{% url 'main:create_product' %}">
-  <button>Add New Product</button>
-</a>
+    <a href="{% url 'main:create_product' %}">
+    <button>Add New Product</button>
+    </a>
 
-{% endblock content %}
-```
+    {% endblock content %}
+    ```
 
 #### Add 4 Views To The Added Objects 
 Since we want to view by ID, we need to change the primary key to UUID as a way to make our application secure. Here&apos;s how!
 
 1. On `models.py` in the `main` directory, add these lines as follow:
-```bash
-import uuid # add this at the top (import statements)
-...
-class ...
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    ```bash
+    import uuid # add this at the top (import statements)
     ...
-```
+    class ...
+        id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+        ...
+    ```
 Don&apos;t forget to do model migration since we are changing the `model.py`!
 
 2. Add these imports to `views.py` file in the `main` directory at the top of the file
-```bash
-from django.http import HttpResponse
-from django.core import serializers
-```
+    ```bash
+    from django.http import HttpResponse
+    from django.core import serializers
+    ```
 3. We create a function inside `views.py` in the main directory to display JSON and XML as a whole and by ID per database entry
-```bash 
-def show_xml(request):
-    product = Product.objects.all()
-    return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
+    ```bash 
+    def show_xml(request):
+        product = Product.objects.all()
+        return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
 
-def show_json(request):
-    product = Product.objects.all()
-    return HttpResponse(serializers.serialize('json', product), content_type='application/json')
+    def show_json(request):
+        product = Product.objects.all()
+        return HttpResponse(serializers.serialize('json', product), content_type='application/json')
 
-def show_xml_by_id(request, id):
-    product = Product.objects.get(pk=id)
-    return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
+    def show_xml_by_id(request, id):
+        product = Product.objects.get(pk=id)
+        return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
 
-def show_json_by_id(request, id):
-    product = Product.objects.get(pk=id)
-    return HttpResponse(serializers.serialize('json', product), content_type='application/json')
-```
+    def show_json_by_id(request, id):
+        product = Product.objects.get(pk=id)
+        return HttpResponse(serializers.serialize('json', product), content_type='application/json')
+    ```
 
 #### Create URL Routing For All Function Inside `views.py`
 1. Import all the function we made in `views.py` to `urls.py` file in the main directory at the top of the file as follow:
-```bash 
-...
-from main.views import show_main, create_product, show_xml, show_json, show_xml_by_id, show_json_by_id
-...
-```
+    ```bash 
+    ...
+    from main.views import show_main, create_product, show_xml, show_json, show_xml_by_id, show_json_by_id
+    ...
+    ```
 
 2. Inside the `urls.py` file in the `main` directory add all the appopriate URL from the modification that we made to `views.py` as follow:
-```bash
-...
-urlpatterns = [
-    path('', show_main, name='show_main'),
-    path('create-product/', create_product, name='create_product'),
-    path('xml/', show_xml, name='show_xml'),
-    path('json/', show_json, name='show_json'),
-    path('xml/<str:id>', show_xml_by_id, name='show_xml_by_id'),
-    path('json/<str:id>', show_json_by_id, name='show_json_by_id'),
-]
-...
-```
+    ```bash
+    ...
+    urlpatterns = [
+        path('', show_main, name='show_main'),
+        path('create-product/', create_product, name='create_product'),
+        path('xml/', show_xml, name='show_xml'),
+        path('json/', show_json, name='show_json'),
+        path('xml/<str:id>', show_xml_by_id, name='show_xml_by_id'),
+        path('json/<str:id>', show_json_by_id, name='show_json_by_id'),
+    ]
+    ...
+    ```
 3. Test the application on localhost with:
-```bash
-python manage.py runserver
-```
+    ```bash
+    python manage.py runserver
+    ```
 Then open http://localhost:8000/ on your _browser_
 
 ### Answers to the Questions
 1. **Why we need data delivery in implementing a platform**
-The main reason of implementing a data delivery in a platform is to have end-to-end data driven approaches. Platforms need to interact with databases, users, and others (just like the diagram on Individual Assignment 2). These interactions require data to be moved between different aspects of the system. By having data delivery we would ensure:
+
+    The main reason of implementing a data delivery in a platform is to have end-to-end data driven approaches. Platforms need to interact with databases, users, and others (just like the diagram on Individual Assignment 2). These interactions require data to be moved 
+    between different aspects of the system. By having data delivery we would ensure:
+
 - User requests like forms are properly handled
 - Data is synchronized across parts of system
 - Reports with the database would run perfectly
 
 2. **Which is better, XML or JSON? Why is JSON more popular?**
-In my opinion, JSON is better because by seeing the Postman response from getting the URL, it is much simpler and more readable than XML. The reason why JSON is more popular because of the advantage that I just said, especially in web development, where simplicity are crucial for handling large amounts of data.
+
+    In my opinion, JSON is better because by seeing the Postman response from getting the URL, it is much simpler and more readable than XML. The reason why JSON is more popular because of the advantage that I just said, especially in web development, where simplicity are crucial for handling large amounts of data.
 
 3. **The fuctional usage of `is_valid()` method in Django forms**
-In Django, the `is_valid()` method checks if the data submitted through the form attaches to the validation defined in the form fields and to check whether the form has no errors. By using `is_valid()` we would ensure that:
+
+    In Django, the `is_valid()` method checks if the data submitted through the form attaches to the validation defined in the form fields and to check whether the form has no errors. By using `is_valid()` we would ensure that:
+
 - All the required fields of the forms are filled in
 - Field types of the models are respected
-If the data is valid, then `is_valid()` would returns `True`, allowing the form data to be processed (in my case is to be saved to the database). Meanwhile, if it is invalid, it returns `False`, and maybe the form errors would be displayed to the user.
 
-We need this method to prevent invalid data from being processed, ensuring the integrity and security of our application.
+    If the data is valid, then `is_valid()` would returns `True`, allowing the form data to be processed (in my case is to be saved to the database). Meanwhile, if it is invalid, it returns `False`, and maybe the form errors would be displayed to the user.
+
+    We need this method to prevent invalid data from being processed, ensuring the integrity and security of our application.
 
 4. **Why we need `csrf_token` in Django forms**
-Django has `csrf_token` or Cross-Site Request Forgery token) to protect forms from a CSRF attacks. A CSRF attack occur when a shady site tricks a user into submitting a request to another site where they are authenticated. Now without a CSRF token:
+
+    Django has `csrf_token` or Cross-Site Request Forgery token) to protect forms from a CSRF attacks. A CSRF attack occur when a shady site tricks a user into submitting a request to another site where they are authenticated. Now without a CSRF token:
+
 - Attackers can perform unauthorized actions disguising as users, such as submitting forms
 - Data would be compromised along with security, leading to data theft or sysmtem compromise
-An attacker can leverage all those stuffs if we do not implement `csrf_token`. The `csrf_token` ensures that the form submissions are coming from the autheticated user by generating a unique token that is verified on both the cliend and server sides.
+
+    An attacker can leverage all those stuffs if we do not implement `csrf_token`. The `csrf_token` ensures that the form submissions are coming from the autheticated user by generating a unique token that is verified on both the cliend and server sides.
 
 5. **How do I impelemt the checklist above step-by-step**
-Already answered on top of this section 🙏😁
+
+    Already answered on top of this section 🙏😁
 
 ### Screenshot Postman
 1. **JSON**
