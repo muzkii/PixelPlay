@@ -12,30 +12,30 @@ Link to PWS : https://andriyo-averill-pixelplay.pbp.cs.ui.ac.id/
 #### -- How to Implement Everything in the Checklist --
 
 1. Creating a new project in Django
-- Start by creating a new directory named `PixelPlay`, this is the name of my E-Commerce.
-- Create a *virtual environment* inside that directory with `python -m venv env` to simplify everything we will use in that environment (creating an isolated environment just for this application).
-- Create a new Django project by executing `django-admin startproject PixelPlay`.
-- Once the project is created, we move the directory to it with `cd PixelPlay`.
+    - Start by creating a new directory named `PixelPlay`, this is the name of my E-Commerce.
+    - Create a *virtual environment* inside that directory with `python -m venv env` to simplify everything we will use in that environment (creating an isolated environment just for this application).
+    - Create a new Django project by executing `django-admin startproject PixelPlay`.
+    - Once the project is created, we move the directory to it with `cd PixelPlay`.
 2.  Configure routing on the project to run the main application
-- Create an application named main in the project with `python manage.py startapp main`.
-- Configure the application in settings, by adding the string "main" to the **settings.py** file located in the `PixelPlay` project directory in the _INSTALLED_APPS_ list.
+    - Create an application named main in the project with `python manage.py startapp main`.
+    - Configure the application in settings, by adding the string "main" to the **settings.py** file located in the `PixelPlay` project directory in the _INSTALLED_APPS_ list.
 3. Create a *Product* model in **models.py**
-- In the `main/models.py` directory, create a Product model with the requested `name`, `price`, and `description` attributes.
+    - In the `main/models.py` directory, create a Product model with the requested `name`, `price`, and `description` attributes.
 4. Migrate the model to a Database
-- Once the model is complete, migrate the model to the database, using `python manage.py makemigrations` and `python manage.py migrate`.
+    - Once the model is complete, migrate the model to the database, using `python manage.py makemigrations` and `python manage.py migrate`.
 5. Creating a function in **views.py**
-- Inside `main/views.py`, create a function that returns an HTML template.
+    - Inside `main/views.py`, create a function that returns an HTML template.
 6. Creating an HTML template
-- Create a templates folder inside the *main* folder, then create an HTML file **main.html** inside it.
+    - Create a templates folder inside the *main* folder, then create an HTML file **main.html** inside it.
 7. Configure routing in **urls.py**
-- Create a **urls.py** file in the *main* folder, then add routing to map the functions from **views.py**.
-- Also add routing in **urls.py** in the project folder to connect the main application.
+    - Create a **urls.py** file in the *main* folder, then add routing to map the functions from **views.py**.
+    - Also add routing in **urls.py** in the project folder to connect the main application.
 8. Deploying to PWS Platform
-- Log-in to the PWS page on https://pbp.cs.ui.ac.id
-- Click on `Create new Project` with the Project Name of `PixelPlay`, then `Create new Project`
-- Added my URL Deployment e.g. `andriyo-averill-PixelPlay.pbp.cs.ui.ac.id` in the _ALLOWED_HOST_ list on **settings.py** file 
-- Run the command contained in the Project Command information on the PWS page
-- Do `git push pws main:master` for future changes on the Django Project
+    - Log-in to the PWS page on https://pbp.cs.ui.ac.id
+    - Click on `Create new Project` with the Project Name of `PixelPlay`, then `Create new Project`
+    - Added my URL Deployment e.g. `andriyo-averill-PixelPlay.pbp.cs.ui.ac.id` in the _ALLOWED_HOST_ list on **settings.py** file 
+    - Run the command contained in the Project Command information on the PWS page
+    - Do `git push pws main:master` for future changes on the Django Project
 
 #### -- Image Diagram --
 
@@ -52,11 +52,11 @@ Personally, the reason behind Django is used for learning Software Development i
 #### -- Why is the Django model called an ORM? --
 
 Django's model is called an ORM, Object-Relational Mapper, because it provides an abstract layer between the database and the Python code. In Django, when we define models as Python classes, these classes represent entities, with class attributes representing the fields of the database as seen in this code:
-```bash
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.IntegerField()
-```
+    ```bash
+    class Product(models.Model):
+        name = models.CharField(max_length=100)
+        price = models.IntegerField()
+    ```
 
 
 ## Individual Assignment 3
