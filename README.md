@@ -282,7 +282,7 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 
     An attacker can leverage all those stuffs if we do not implement `csrf_token`. The `csrf_token` ensures that the form submissions are coming from the autheticated user by generating a unique token that is verified on both the cliend and server sides.
 
-5. **How do I impelemt the checklist above step-by-step**
+5. **How do I implement the checklist above step-by-step**
 
     Already answered on top of this section 🙏😁
 
