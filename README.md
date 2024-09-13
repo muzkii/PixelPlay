@@ -74,11 +74,11 @@ class ProductForm(ModelForm):
         fields = ['name', 'price', 'description', 'category', 'stock', 'rating']
 ```
 2. Edit the `views.py` file in the `main` directory to add these import statements:
-```bash
-from django.shortcuts import render, redirect 
-from main.forms import ProductForm
-from main.models import Product
-```
+    ```bash
+    from django.shortcuts import render, redirect 
+    from main.forms import ProductForm
+    from main.models import Product
+    ```
 3. Create a function to add the database entries inside `views.py` file in the `main` directory with contents as follow:
 ```bash
 def create_product(request):
