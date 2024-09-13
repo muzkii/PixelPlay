@@ -195,7 +195,7 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
         id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
         ...
     ```
-Don&apos;t forget to do model migration since we are changing the `model.py`!
+    Don&apos;t forget to do model migration since we are changing the `model.py`!
 
 2. Add these imports to `views.py` file in the `main` directory at the top of the file
     ```bash
@@ -246,7 +246,7 @@ Don&apos;t forget to do model migration since we are changing the `model.py`!
     ```bash
     python manage.py runserver
     ```
-Then open http://localhost:8000/ on your _browser_
+    Then open http://localhost:8000/ on your _browser_
 
 ### Answers to the Questions
 1. **Why we need data delivery in implementing a platform**
