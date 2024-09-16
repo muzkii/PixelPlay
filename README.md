@@ -116,7 +116,7 @@ class Product(models.Model):
 
         return render(request, "main.html", context)
     ```
-5. Create a directory `templates` in the main directory and create an HTML file with the name base.html that acts as a skeleton for views. Fill in the file contents with:
+5. Create a directory `templates` in the main directory and create an HTML file with the name `base.html` that acts as a skeleton for views. Fill in the file contents with:
     ```bash
     {% load static %}
     <!DOCTYPE html>
@@ -140,7 +140,7 @@ class Product(models.Model):
             'DIRS': [BASE_DIR / 'templates'],
     ...
     ```
-7. Implementing a database into the main page `main.html` so that it uses the `base.html` as the main templte and also `extends base.html` in the main directory
+7. Implementing a database into the main page `main.html` so that it uses the `base.html` as the main template and also `extends base.html` in the main directory
     ```bash
     {% extends 'base.html' %}
     {% block content %}
