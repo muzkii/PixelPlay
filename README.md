@@ -397,20 +397,20 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 6. We can implement a login function and add to `views.py` as follows:
     ```bash
     def login_user(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            response = HttpResponseRedirect(reverse("main:show_main"))
-            response.set_cookie('last_login', str(datetime.datetime.now()))
-            return response
-
-    else:
-        form = AuthenticationForm(request)
-    context = {'form': form}
-    return render(request, 'login.html', context)
+        if request.method == 'POST':
+            form = AuthenticationForm(data=request.POST)
+    
+            if form.is_valid():
+                user = form.get_user()
+                login(request, user)
+                response = HttpResponseRedirect(reverse("main:show_main"))
+                response.set_cookie('last_login', str(datetime.datetime.now()))
+                return response
+    
+        else:
+            form = AuthenticationForm(request)
+        context = {'form': form}
+        return render(request, 'login.html', context)
     ```
 
 7. Following the step before, we have to create a new HTML file named `login.html` to render the login function as explained before in the `templates` subdirectory inside the main `directory` as follows:  
@@ -473,8 +473,8 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 10. We can implement a logout function and add to `views.py` as follows:
     ```bash
     def logout_user(request):
-    logout(request)
-    return redirect('main:login')
+        logout(request)
+        return redirect('main:login')
     ```
 
 11. Following the step before, we have to add a button to the `main.html` file to act as the hyperlink tag to logout. We add the code in the `templates` subdirectory inside the main `directory` as follows:  
@@ -517,9 +517,9 @@ Now we have implemented all the functions as requested.
     ```bash
     ...
     if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('main:show_main')
+        user = form.get_user()
+        login(request, user)
+        return redirect('main:show_main')
     ...
     ```
     To:
