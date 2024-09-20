@@ -323,18 +323,18 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 2. We can implement a register function and add to `views.py` as follows:
     ```bash
     def register(request):
-    form = UserCreationForm()
-
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your new account has been sucessfully added!')
-            return redirect('main:login')
-    context = {
-        'form':form
-        }
-    return render(request, 'register.html', context)
+        form = UserCreationForm()
+    
+        if request.method == "POST":
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your new account has been sucessfully added!')
+                return redirect('main:login')
+        context = {
+            'form':form
+            }
+        return render(request, 'register.html', context)
     ```
     As you can see, we would create the account when is_valid() is True (recall on assignment 2). It would redirect back to the login page for users to continue, as for now we haven't made the `login.html` page.
 
