@@ -493,9 +493,9 @@ Continue to add the URL path:
     from main.views import ..., logout_user
     ```
 
-Continue to add the URL path:
+    Continue to add the URL path:
 
-    ```
+    ```bash
         urlpatterns = [
         ...
         path('login/', login_user, name='login'),
