@@ -301,6 +301,12 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 ![Screenshot 2024-09-13 144823](https://github.com/user-attachments/assets/9bd07b21-75d6-4429-910e-6c5a0306714c)
 
 
+3. **JSON by ID**
+![Screenshot 2024-09-13 145708](https://github.com/user-attachments/assets/25915a24-9a85-43c6-897f-17fbe0604c9b)
+
+4. **XML by ID**
+![Screenshot 2024-09-13 145720](https://github.com/user-attachments/assets/887ef154-56e0-4b3b-ae9f-b363ccedddb5)
+
 ## Individual Assignment 4
 
 #### Implement Register, Login, and Logout Functions
@@ -373,12 +379,12 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
     ```
 Continue to add the URL path:
 
-    ```
-    urlpatterns = [
-        ...
-        path('register/', register, name='register')
-    ]
-    ```
+        ```
+        urlpatterns = [
+            ...
+            path('register/', register, name='register')
+        ]
+        ```
 
 ##### **Login**
 
@@ -451,12 +457,12 @@ Continue to add the URL path:
 
 Continue to add the URL path:
     
-    ```
-    urlpatterns = [
-    ...
-    path('login/', login_user, name='login')
-    ]
-    ```
+        ```
+        urlpatterns = [
+        ...
+        path('login/', login_user, name='login')
+        ]
+        ```
 
 ##### **Logout**
 
@@ -489,19 +495,11 @@ Continue to add the URL path:
 
 Continue to add the URL path:
     
-    ```
-    urlpatterns = [
-    ...
-    path('login/', login_user, name='login'),
-    ]
-    ```
+        ```
+        urlpatterns = [
+        ...
+        path('login/', login_user, name='login'),
+        ]
+        ```
 
 Now we have implemented all the functions as requested.
-
-3. **JSON by ID**
-![Screenshot 2024-09-13 145708](https://github.com/user-attachments/assets/25915a24-9a85-43c6-897f-17fbe0604c9b)
-
-4. **XML by ID**
-![Screenshot 2024-09-13 145720](https://github.com/user-attachments/assets/887ef154-56e0-4b3b-ae9f-b363ccedddb5)
-
-
