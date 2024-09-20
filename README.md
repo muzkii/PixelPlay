@@ -494,11 +494,12 @@ Continue to add the URL path:
     ```
 
 Continue to add the URL path:
+
     ```
-    urlpatterns = [
-    ...
-    path('login/', login_user, name='login'),
-    ]
+        urlpatterns = [
+        ...
+        path('login/', login_user, name='login'),
+        ]
     ```
 
 Now we have implemented all the functions as requested.
