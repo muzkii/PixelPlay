@@ -377,14 +377,13 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
     ```bash
     from main.views import ..., register
     ```
-Continue to add the URL path:
-
-        ```
-        urlpatterns = [
-            ...
-            path('register/', register, name='register')
-        ]
-        ```
+    Continue to add the URL path:
+    ```
+    urlpatterns = [
+        ...
+        path('register/', register, name='register')
+    ]
+    ```
 
 ##### **Login**
 
@@ -455,14 +454,13 @@ Continue to add the URL path:
     from main.views import ..., login_user
     ```
 
-Continue to add the URL path:
-    
-        ```
-        urlpatterns = [
-        ...
-        path('login/', login_user, name='login')
-        ]
-        ```
+    Continue to add the URL path:
+    ```
+    urlpatterns = [
+    ...
+    path('login/', login_user, name='login')
+    ]
+    ```
 
 ##### **Logout**
 
@@ -494,12 +492,100 @@ Continue to add the URL path:
     ```
 
     Continue to add the URL path:
-
     ```bash
-        urlpatterns = [
-        ...
-        path('login/', login_user, name='login'),
-        ]
+    urlpatterns = [
+    ...
+    path('logout/', logout_user, name='logout')
+    ]
     ```
 
 Now we have implemented all the functions as requested.
+
+#### Display Logged-In User Details (Username) and Apply Cookies (Last Login)
+
+##### **Implementing Cookies**
+
+1. To implement last login, we need to have the date and time itself and to redirect after the form submission or other actions that we have did. We can use built-in Django function and Python function and import them to `views.py` on the `main` directory as follows:
+    ```bash
+    ...
+    from django.http import ..., HttpResponseRedirect
+    from django.urls import reverse
+    import datetime
+    ```
+
+2. We can replace the previous line of code in `login_user` function inside `views.py` on the `main` directory from:
+    ```bash
+    ...
+    if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('main:show_main')
+    ...
+    ```
+    To:
+    ```bash
+    ...
+    if form.is_valid():
+        user = form.get_user()
+        login(request, user)
+        response = HttpResponseRedirect(reverse("main:show_main"))
+        response.set_cookie('last_login', str(datetime.datetime.now()))
+        return response
+    ...
+    ```
+
+3. Now, we have to change the `show_main` function, inside the same file (`views.py` on the `main` directory) to handle last login in the `context` variable as follows:
+    ```bash
+    ...
+    context = {
+        'name': "andriyo averill",
+        'products': products,
+        'last_login': request.COOKIES.get('last_login')
+    }
+    ```
+
+4. We have to also modify the `logout_user` function to be able to cookies based on when the user logged out as follows:
+    ```bash
+    def logout_user(request):
+        logout(request)
+        response = HttpResponseRedirect(reverse('main:login'))
+        response.delete_cookie('last_login')
+        return response
+    ```
+
+5. Lastly, we have to display the last login in `main.html` file on the `templates` subdirectory inside `main` directory, in order to do so we have to add the following:
+    ```bash
+    ...
+    <h5>Last login session: {{ last_login }}</h5>
+    ...
+    ```
+
+##### **Implementing Logged-In User**
+
+6. We can implement it by editing `show_main` function inside `views.py` on the `main` directory. We have to change the code to as shown:
+    ```bash
+    ...
+    context = {
+        'name': request.user.username,
+        'products': products,
+    ...
+    }
+    ```
+
+#### Two Accounts with Three *Dummy Data* Each Example
+
+1. Account with the name of andriyo with the data as follows:
+
+![Screenshot 2024-09-21 005104](https://github.com/user-attachments/assets/eadae369-5b1a-413e-8dd7-3b4711ecb5f4)
+
+2. Account with the name of adyo with the three last data as follows:
+
+![Screenshot 2024-09-21 005827](https://github.com/user-attachments/assets/7e587432-7725-422e-9a7c-d6d7e85ccd1e)
+
+Because we haven't connect the models where each user would have their own data, here we see that the data is still linked even though we are using different accounts.
+
+#### Connect the Models `Product` and `User`
+
+We need to create a relationship between the two models. Specifically, this involves establishing a database relationship so that instances of Product are linked to instances of User. There are several types of relationships, depending on how the models should interact with each other. Since I am taking Databases course, we can use ForeignKey (One to Many Relationship) as follows:
+
+1. on 
