@@ -300,6 +300,204 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 2. **XML**
 ![Screenshot 2024-09-13 144823](https://github.com/user-attachments/assets/9bd07b21-75d6-4429-910e-6c5a0306714c)
 
+
+## Individual Assignment 4
+
+#### Implement Register, Login, and Logout Functions
+
+##### **Register**
+
+1. In order to implement a register function, we have to make a function to create the user itself. Luckily, we can use the built-in function `UserCreationForm` inside Django. Add these imports in `views.py` in the `main` directory as follows:
+    ```bash
+    ...
+    from django.contrib.auth.forms import UserCreationForm
+    from django.contrib import messages
+    ```
+
+2. We can implement a register function and add to `views.py` as follows:
+    ```bash
+    def register(request):
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your new account has been sucessfully added!')
+            return redirect('main:login')
+    context = {
+        'form':form
+        }
+    return render(request, 'register.html', context)
+    ```
+    As you can see, we would create the account when is_valid() is True (recall on assignment 2). It would redirect back to the login page for users to continue, as for now we haven't made the `login.html` page.
+
+3. Following the step before, we have to create a new HTML file named `register.html` to render the register function as explained before in the `templates` subdirectory inside the main `directory` as follows:  
+    ```bash
+    {% extends 'base.html' %}
+
+    {% block meta %}
+    <title>Register</title>
+    {% endblock meta %}
+
+    {% block content %}
+
+    <div class="login">
+    <h1>Register</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td><input type="submit" name="submit" value="Register" /></td>
+        </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    </div>
+
+    {% endblock content %}
+    ```
+4. Now don't forget to implement it into the `urlpatters` to access the function. On `urls.py` inside the `main` directory, import the function as follows:
+    ```bash
+    from main.views import ..., register
+    ```
+Continue to add the URL path:
+
+    ```
+    urlpatterns = [
+        ...
+        path('register/', register, name='register')
+    ]
+    ```
+
+##### **Login**
+
+5. In order to implement a login function, we can use the built-in function `authenticate`, `login`, and `AuthenticationForm` inside Django. Add these imports in `views.py` in the `main` directory as follows:
+    ```bash
+    ...
+    from django.contrib.auth.forms import ..., AuthenticationForm
+    from django.contrib.auth import authenticate, login
+    ```
+
+6. We can implement a login function and add to `views.py` as follows:
+    ```bash
+    def login_user(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            response = HttpResponseRedirect(reverse("main:show_main"))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+
+    else:
+        form = AuthenticationForm(request)
+    context = {'form': form}
+    return render(request, 'login.html', context)
+    ```
+
+7. Following the step before, we have to create a new HTML file named `login.html` to render the login function as explained before in the `templates` subdirectory inside the main `directory` as follows:  
+    ```bash
+    {% extends 'base.html' %}
+
+    {% block meta %}
+    <title>Login</title>
+    {% endblock meta %}
+
+    {% block content %}
+    <div class="login">
+    <h1>Login</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td><input class="btn login_btn" type="submit" value="Login" /></td>
+        </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} Don't have an account yet?
+    <a href="{% url 'main:register' %}">Register Now</a>
+    </div>
+
+    {% endblock content %}
+    ```
+
+8. Implement it into the `urlpatters` to access the function. On `urls.py` inside the `main` directory, import the function as follows:
+    ```bash
+    from main.views import ..., login_user
+    ```
+
+Continue to add the URL path:
+    
+    ```
+    urlpatterns = [
+    ...
+    path('login/', login_user, name='login')
+    ]
+    ```
+
+##### **Logout**
+
+9. In order to implement a logout function, we can use the built-in function `logout` inside Django. Add this import in `views.py` in the `main` directory as follows:
+    ```bash
+    ...
+    from django.contrib.auth import ..., logout
+    ```
+
+10. We can implement a logout function and add to `views.py` as follows:
+    ```bash
+    def logout_user(request):
+    logout(request)
+    return redirect('main:login')
+    ```
+
+11. Following the step before, we have to add a button to the `main.html` file to act as the hyperlink tag to logout. We add the code in the `templates` subdirectory inside the main `directory` as follows:  
+    ```bash
+    ...
+    <a href="{% url 'main:logout' %}">
+        <button>Logout</button>
+    </a>
+    ```
+
+12. Implement it into the `urlpatters` to access the function. On `urls.py` inside the `main` directory, import the function as follows:
+    
+    ```bash
+    from main.views import ..., logout_user
+    ```
+
+Continue to add the URL path:
+    
+    ```
+    urlpatterns = [
+    ...
+    path('login/', login_user, name='login'),
+    ]
+    ```
+
+Now we have implemented all the functions as requested.
+
 3. **JSON by ID**
 ![Screenshot 2024-09-13 145708](https://github.com/user-attachments/assets/25915a24-9a85-43c6-897f-17fbe0604c9b)
 
