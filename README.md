@@ -715,29 +715,29 @@ We need to create a relationship between the two models. Specifically, this invo
 
     When a User logs in, Django sequentially do:
     
-- Authenticates: Checks the user's credentials (by `authenticate()`)
-- Creates session: When authentication is successful, Django creates a session for the user and stores the session ID in the browser's cookies (checked by inspecting and check the application)
-- Associates the session with the user: Django can keeps track of the user's aunthentication status through the session. Considered as "logged in" as long as the session is running
+    - Authenticates: Checks the user's credentials (by `authenticate()`)
+    - Creates session: When authentication is successful, Django creates a session for the user and stores the session ID in the browser's cookies (checked by inspecting and check the application)
+    - Associates the session with the user: Django can keeps track of the user's aunthentication status through the session. Considered as "logged in" as long as the session is running
 
 4. **How does Django remember logged-in users? Explain other uses of *cookies* and whether all cookies are safe to use.**
 
     Django uses **sessions** and **cookies** to remember looged-in users:
 
-- **Sessions**: Django stores session data (including whether a user is logged in) on the server side and associates it with a unique session ID. This session ID is sent to the user's browser as a cookie.
-- **Cookies**: A small file stored on the client’s machine. The session ID is stored in a cookie (sessionid by default), which is sent with each subsequent request. Django uses this cookie to retrieve the session data and confirm that the user is logged in.
+    - **Sessions**: Django stores session data (including whether a user is logged in) on the server side and associates it with a unique session ID. This session ID is sent to the user's browser as a cookie.
+    - **Cookies**: A small file stored on the client’s machine. The session ID is stored in a cookie (sessionid by default), which is sent with each subsequent request. Django uses this cookie to retrieve the session data and confirm that the user is logged in.
 
     Other Uses of Cookies:
 
-- **Storing preferences**: Cookies can be used to store user preferences, such as language settings or theme choices, across sessions.
-- **Tracking activity**: Websites may use cookies to track user behavior for analytics or personalization purposes.
-- **Remembering form inputs**: Cookies can be used to prefill form fields with values entered previously by the user.
+    - **Storing preferences**: Cookies can be used to store user preferences, such as language settings or theme choices, across sessions.
+    - **Tracking activity**: Websites may use cookies to track user behavior for analytics or personalization purposes.
+    - **Remembering form inputs**: Cookies can be used to prefill form fields with values entered previously by the user.
 
     Are All Cookies Safe to Use?
     Not all cookies are inherently safe. Here are some security considerations:
 
-- **Secure flag**: Cookies with the "Secure" flag are only sent over HTTPS, making them less vulnerable to interception.
-- **HttpOnly flag**: Cookies with the "HttpOnly" flag cannot be accessed by client-side JavaScript, preventing them from being exploited by cross-site scripting (XSS) attacks.
-- **Session Hijacking**: If a session cookie is intercepted, an attacker can impersonate the user.
+    - **Secure flag**: Cookies with the "Secure" flag are only sent over HTTPS, making them less vulnerable to interception.
+    - **HttpOnly flag**: Cookies with the "HttpOnly" flag cannot be accessed by client-side JavaScript, preventing them from being exploited by cross-site scripting (XSS) attacks.
+    - **Session Hijacking**: If a session cookie is intercepted, an attacker can impersonate the user.
 
 5. **How do I impelemt the checklist above step-by-step**
 
