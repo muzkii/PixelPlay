@@ -640,10 +640,10 @@ We need to create a relationship between the two models. Specifically, this invo
     ```
     def show_main(request):
         products = Product.objects.filter(user=request.user)
-    context = {
-        'name': request.user.username,
-        'products': products,
-        ...
+        context = {
+            'name': request.user.username,
+            'products': products,
+            ...
     ```
 
 5. Since we have made changes to `models.py` we have to run the model migration with:
