@@ -598,11 +598,11 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 
     ![Screenshot 2024-09-21 005827](https://github.com/user-attachments/assets/7e587432-7725-422e-9a7c-d6d7e85ccd1e)
 
-Because we haven't connect the models where each user would have their own data, here we see that the data is still linked even though we are using different accounts.
+    Because we haven't connect the models where each user would have their own data, here we see that the data is still linked even though we are using different accounts.
 
 #### Connect the Models `Product` and `User`
 
-We need to create a relationship between the two models. Specifically, this involves establishing a database relationship so that instances of Product are linked to instances of User. There are several types of relationships, depending on how the models should interact with each other. Since I am taking Databases course, we can use ForeignKey (One to Many Relationship) as follows:
+    We need to create a relationship between the two models. Specifically, this involves establishing a database relationship so that instances of Product are linked to instances of User. There are several types of relationships, depending on how the models should interact with each other. Since I am taking Databases course, we can use ForeignKey (One to Many Relationship) as follows:
 
 1. On `models.py` in the `main` directory we need to differentiate users, in that case we need to import the User itself as follows:
     ```bash
