@@ -5,7 +5,7 @@ An E-Commerce about Gaming Appliances created by Andriyo Averill Fahrezi with th
 
 Link to PWS : https://andriyo-averill-pixelplay.pbp.cs.ui.ac.id/
 
-# Individual Assignment 2
+## Individual Assignment 2
 
 
 
