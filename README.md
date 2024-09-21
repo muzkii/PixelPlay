@@ -602,10 +602,7 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 
 #### Connect the Models `Product` and `User`
 
-    We need to create a relationship between the two models. Specifically, this involves establishing a database relationship so that instances of Product are linked to instances of User.  
-    There are several types of relationships, depending on how the models should interact with each other. Since I am taking Databases course, we can use ForeignKey (One to Many 
-    Relationship)
-    as follows:
+We need to create a relationship between the two models. Specifically, this involves establishing a database relationship so that instances of Product are linked to instances of User. There are several types of relationships, depending on how the models should interact with each other. Since I am taking Databases course, we can use ForeignKey (One to Many Relationship) as follows:
 
 1. On `models.py` in the `main` directory we need to differentiate users, in that case we need to import the User itself as follows:
     ```bash
