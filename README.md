@@ -499,7 +499,7 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
         ]
     ```
 
-Now we have implemented all the functions as requested.
+    Now we have implemented all the functions as requested.
 
 #### Display Logged-In User Details (Username) and Apply Cookies (Last Login)
 
