@@ -5,7 +5,7 @@ An E-Commerce about Gaming Appliances created by Andriyo Averill Fahrezi with th
 
 Link to PWS : https://andriyo-averill-pixelplay.pbp.cs.ui.ac.id/
 
-# Individual Assignment 2
+## Individual Assignment 2
 
 
 
@@ -116,7 +116,7 @@ class Product(models.Model):
 
         return render(request, "main.html", context)
     ```
-5. Create a directory `templates` in the main directory and create an HTML file with the name base.html that acts as a skeleton for views. Fill in the file contents with:
+5. Create a directory `templates` in the main directory and create an HTML file with the name `base.html` that acts as a skeleton for views. Fill in the file contents with:
     ```bash
     {% load static %}
     <!DOCTYPE html>
@@ -140,7 +140,7 @@ class Product(models.Model):
             'DIRS': [BASE_DIR / 'templates'],
     ...
     ```
-7. Implementing a database into the main page `main.html` so that it uses the `base.html` as the main templte and also `extends base.html` in the main directory
+7. Implementing a database into the main page `main.html` so that it uses the `base.html` as the main template and also `extends base.html` in the main directory
     ```bash
     {% extends 'base.html' %}
     {% block content %}
@@ -300,10 +300,445 @@ Since we want to view by ID, we need to change the primary key to UUID as a way 
 2. **XML**
 ![Screenshot 2024-09-13 144823](https://github.com/user-attachments/assets/9bd07b21-75d6-4429-910e-6c5a0306714c)
 
+
 3. **JSON by ID**
 ![Screenshot 2024-09-13 145708](https://github.com/user-attachments/assets/25915a24-9a85-43c6-897f-17fbe0604c9b)
 
 4. **XML by ID**
 ![Screenshot 2024-09-13 145720](https://github.com/user-attachments/assets/887ef154-56e0-4b3b-ae9f-b363ccedddb5)
 
+## Individual Assignment 4
 
+#### Implement Register, Login, and Logout Functions
+
+##### **Register**
+
+1. In order to implement a register function, we have to make a function to create the user itself. Luckily, we can use the built-in function `UserCreationForm` inside Django. Add these imports in `views.py` in the `main` directory as follows:
+    ```bash
+    ...
+    from django.contrib.auth.forms import UserCreationForm
+    from django.contrib import messages
+    ```
+
+2. We can implement a register function and add to `views.py` as follows:
+    ```bash
+    def register(request):
+        form = UserCreationForm()
+    
+        if request.method == "POST":
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your new account has been sucessfully added!')
+                return redirect('main:login')
+        context = {
+            'form':form
+            }
+        return render(request, 'register.html', context)
+    ```
+    As you can see, we would create the account when is_valid() is True (recall on assignment 2). It would redirect back to the login page for users to continue, as for now we haven't made the `login.html` page.
+
+3. Following the step before, we have to create a new HTML file named `register.html` to render the register function as explained before in the `templates` subdirectory inside the main `directory` as follows:  
+    ```bash
+    {% extends 'base.html' %}
+
+    {% block meta %}
+    <title>Register</title>
+    {% endblock meta %}
+
+    {% block content %}
+
+    <div class="login">
+    <h1>Register</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td><input type="submit" name="submit" value="Register" /></td>
+        </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    </div>
+
+    {% endblock content %}
+    ```
+4. Now don't forget to implement it into the `urlpatters` to access the function. On `urls.py` inside the `main` directory, import the function as follows:
+    ```bash
+    from main.views import ..., register
+    ```
+    Continue to add the URL path:
+    ```
+    urlpatterns = [
+        ...
+        path('register/', register name='register')
+        ]
+    ```
+
+##### **Login**
+
+5. In order to implement a login function, we can use the built-in function `authenticate`, `login`, and `AuthenticationForm` inside Django. Add these imports in `views.py` in the `main` directory as follows:
+    ```bash
+    ...
+    from django.contrib.auth.forms import ..., AuthenticationForm
+    from django.contrib.auth import authenticate, login
+    ```
+
+6. We can implement a login function and add to `views.py` as follows:
+    ```bash
+    def login_user(request):
+        if request.method == 'POST':
+            form = AuthenticationForm(data=request.POST)
+    
+            if form.is_valid():
+                user = form.get_user()
+                login(request, user)
+                response = HttpResponseRedirect(reverse("main:show_main"))
+                response.set_cookie('last_login', str(datetime.datetime.now()))
+                return response
+    
+        else:
+            form = AuthenticationForm(request)
+        context = {'form': form}
+        return render(request, 'login.html', context)
+    ```
+
+7. Following the step before, we have to create a new HTML file named `login.html` to render the login function as explained before in the `templates` subdirectory inside the main `directory` as follows:  
+    ```bash
+    {% extends 'base.html' %}
+
+    {% block meta %}
+    <title>Login</title>
+    {% endblock meta %}
+
+    {% block content %}
+    <div class="login">
+    <h1>Login</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td><input class="btn login_btn" type="submit" value="Login" /></td>
+        </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} Don't have an account yet?
+    <a href="{% url 'main:register' %}">Register Now</a>
+    </div>
+
+    {% endblock content %}
+    ```
+
+8. Implement it into the `urlpatters` to access the function. On `urls.py` inside the `main` directory, import the function as follows:
+    ```bash
+    from main.views import ..., login_user
+    ```
+
+    Continue to add the URL path:
+    ```
+    urlpatterns = [
+        ...
+        path('login/', login_user, name='login')
+        ]
+    ```
+
+##### **Logout**
+
+9. In order to implement a logout function, we can use the built-in function `logout` inside Django. Add this import in `views.py` in the `main` directory as follows:
+    ```bash
+    ...
+    from django.contrib.auth import ..., logout
+    ```
+
+10. We can implement a logout function and add to `views.py` as follows:
+    ```bash
+    def logout_user(request):
+        logout(request)
+        return redirect('main:login')
+    ```
+
+11. Following the step before, we have to add a button to the `main.html` file to act as the hyperlink tag to logout. We add the code in the `templates` subdirectory inside the main `directory` as follows:  
+    ```bash
+    ...
+    <a href="{% url 'main:logout' %}">
+        <button>Logout</button>
+    </a>
+    ```
+
+12. Implement it into the `urlpatters` to access the function. On `urls.py` inside the `main` directory, import the function as follows:
+    
+    ```bash
+    from main.views import ..., logout_user
+    ```
+
+    Continue to add the URL path:
+    ```bash
+    urlpatterns = [
+        ...
+        path('logout/', logout_user, name='logout')
+        ]
+    ```
+
+    Now we have implemented all the functions as requested.
+
+#### Display Logged-In User Details (Username) and Apply Cookies (Last Login)
+
+##### **Implementing Cookies**
+
+1. To implement last login, we need to have the date and time itself and to redirect after the form submission or other actions that we have did. We can use built-in Django function and Python function and import them to `views.py` on the `main` directory as follows:
+    ```bash
+    ...
+    from django.http import ..., HttpResponseRedirect
+    from django.urls import reverse
+    import datetime
+    ```
+
+2. We can replace the previous line of code in `login_user` function inside `views.py` on the `main` directory from:
+    ```bash
+    ...
+    if form.is_valid():
+        user = form.get_user()
+        login(request, user)
+        return redirect('main:show_main')
+    ...
+    ```
+    To:
+    ```bash
+    ...
+    if form.is_valid():
+        user = form.get_user()
+        login(request, user)
+        response = HttpResponseRedirect(reverse("main:show_main"))
+        response.set_cookie('last_login', str(datetime.datetime.now()))
+        return response
+    ...
+    ```
+
+3. Now, we have to change the `show_main` function, inside the same file (`views.py` on the `main` directory) to handle last login in the `context` variable as follows:
+    ```bash
+    ...
+    context = {
+        'name': "andriyo averill",
+        'products': products,
+        'last_login': request.COOKIES.get('last_login')
+    }
+    ```
+
+4. We have to also modify the `logout_user` function to be able to cookies based on when the user logged out as follows:
+    ```bash
+    def logout_user(request):
+        logout(request)
+        response = HttpResponseRedirect(reverse('main:login'))
+        response.delete_cookie('last_login')
+        return response
+    ```
+
+5. Lastly, we have to display the last login in `main.html` file on the `templates` subdirectory inside `main` directory, in order to do so we have to add the following:
+    ```bash
+    ...
+    <h5>Last login session: {{ last_login }}</h5>
+    ...
+    ```
+
+##### **Implementing Logged-In User**
+
+6. We can implement it by editing `show_main` function inside `views.py` on the `main` directory. We have to change the code to as shown:
+    ```bash
+    ...
+    context = {
+        'name': request.user.username,
+        'products': products,
+    ...
+    }
+    ```
+
+7. Since we have implemented a login function, it's best if secure it to make users have to login first before they can continue. To do this we can use a built-in Django function called `login_required`, we add this import to our `views.py` file in the `main` directory as follows:
+
+    ```bash
+    ...
+    from django.contrib.auth.decorators import login_required
+    ```
+
+    Add this to `show_main`
+
+    ```bash
+    ...
+    @login_required(login_url='/login')
+    def show_main(request):
+        ...
+    ```
+
+#### Two Accounts with Three *Dummy Data* Each Example
+
+1. Account with the name of andriyo with the data as follows:
+
+    ![Screenshot 2024-09-21 005104](https://github.com/user-attachments/assets/eadae369-5b1a-413e-8dd7-3b4711ecb5f4)
+
+2. Account with the name of adyo with the three last data as follows:
+
+    ![Screenshot 2024-09-21 005827](https://github.com/user-attachments/assets/7e587432-7725-422e-9a7c-d6d7e85ccd1e)
+
+    Because we haven't connect the models where each user would have their own data, here we see that the data is still linked even though we are using different accounts.
+
+#### Connect the Models `Product` and `User`
+
+We need to create a relationship between the two models. Specifically, this involves establishing a database relationship so that instances of Product are linked to instances of User. There are several types of relationships, depending on how the models should interact with each other. Since I am taking Databases course, we can use ForeignKey (One to Many Relationship) as follows:
+
+1. On `models.py` in the `main` directory we need to differentiate users, in that case we need to import the User itself as follows:
+    ```bash
+    ...
+    from django.contrib.auth.models import User
+    ```
+
+2. We need to add the user itself to the models as follows, because we have `Product` model:
+    ```bash
+    class Product(models.Model):
+        user = models.ForeignKey(User, on_delete=models.CASCADE)
+        ...
+    ```
+    Now we have bonded our `Product` model to a `User` through a ForeignKey relationship
+
+    
+3. Next, we have to edit our form function to be able to save the form based on the user. On `views.py` in the `main` directory modify `create_product` function as follows:
+    ```bash
+    def create_product(request):
+        form = ProductForm(request.POST or None)
+
+        if form.is_valid() and request.method == 'POST':
+            products = form.save(commit=False)
+            products.user = request.user
+            products.save()
+            return redirect('main:show_main')
+
+        context = {
+            'form': form
+        }
+
+        return render(request, "create_product.html", context)
+
+4. Now, we have to filter all objects to only retrieve the `Product` where the `user` field is filled with the corresponding User as follows:
+    ```
+    def show_main(request):
+        products = Product.objects.filter(user=request.user)
+        context = {
+            'name': request.user.username,
+            'products': products,
+            ...
+    ```
+
+5. Since we have made changes to `models.py` we have to run the model migration with:
+    ```bash
+    python manage.py makemigrations
+    ```
+
+6. Now select the default value for the `user` field based on the forms that we have already created earlier in the *dummy* account database.
+    ```bash
+    It is impossible to add a non-nullable field 'user' to product without specifying a default. This is because the database needs something to populate existing rows.
+    Please select a fix:
+    1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+    2) Quit and manually define a default value in models.py.
+    Select an option: 1
+    Please enter the default value as valid Python.
+    The datetime and django.utils.timezone modules are available, so it is possible to provide e.g. timezone.now as a value.
+    Type 'exit' to exit this prompt
+    >>> 1
+    ```
+    Now run:
+    ```bash
+    python manage.py migrate
+    ```
+
+7. Finally we have to make it such that our project is ready for a production environtment. Add these imports to `settings.py` on our project directory and the following:
+
+    ```bash
+    ...
+    import os
+    ```
+
+    Then change the DEBUG in `settings.py` as follows:
+
+    ```bash
+    PRODUCTION = os.getenv("PRODUCTION", False)
+    DEBUG = not PRODUCTION
+    ```
+
+### Answers to the Questions
+
+1. **What is difference between `HttpResponseRedirect()` and `redirect()`?**
+
+    Since both has "Redirect" in their names so it must be to perform redirection, but they are used slightly differently. `HttpResponseRedirect` requires to explicitly provide the URL or use reverse() to look the URL up, meanwhile `redirect` is a more convenient shortcut that can automatically resolve a URL from a view name or model object just how we did in `logout_user` function.
+
+2. **How the `MoodEntry` model is linked with `User`**
+
+    Just like how I implemented in the top, so that each entry is associated with a specific user, we can implement to link it with ForeignKey relationship. This allows one user to have many mood entries, but eaach mood entry is associated with only one user, a One-To-Many relationship.
+
+3. **Difference between *authentication* and *authorization* and what happens when a user logs in? Explain how Django implements these two concepts.**
+
+    Authentication refers to verify (authenticate) who the user is. It checks from credentials usually provided in the form of username and password that is created by the user against stored credentials to confirm their own identity. In Django, authentication is handled through Django's built-in functions such as `authenticate()` and `login()` like:
+    ```bash
+    from django.contrib.auth import authenticate, login
+
+    def user_login(request):
+        user = authenticate(username='john', password='secret')
+        if user is not None:
+            login(request, user)
+    ```
+
+    Meanwhile, authorization refers to what action a user is allowed to do. It checks whether an authenticated user has certain permission to access certain resources or perform certain actions. In Django, authorization is handled by decorators like `@login_required` and `@permission_required` like:
+    ```bash
+    from django.contrib.auth.decorators import login_required
+
+    @login_required
+    def my_view(request):
+        ...
+    ```
+
+    When a User logs in, Django sequentially do:
+    
+    - Authenticates: Checks the user's credentials (by `authenticate()`)
+    - Creates session: When authentication is successful, Django creates a session for the user and stores the session ID in the browser's cookies (checked by inspecting and check the application)
+    - Associates the session with the user: Django can keeps track of the user's aunthentication status through the session. Considered as "logged in" as long as the session is running
+
+4. **How does Django remember logged-in users? Explain other uses of *cookies* and whether all cookies are safe to use.**
+
+    Django uses **sessions** and **cookies** to remember looged-in users:
+
+    - **Sessions**: Django stores session data (including whether a user is logged in) on the server side and associates it with a unique session ID. This session ID is sent to the user's browser as a cookie.
+    - **Cookies**: A small file stored on the client’s machine. The session ID is stored in a cookie (sessionid by default), which is sent with each subsequent request. Django uses this cookie to retrieve the session data and confirm that the user is logged in.
+
+    Other Uses of Cookies:
+
+    - **Storing preferences**: Cookies can be used to store user preferences, such as language settings or theme choices, across sessions.
+    - **Tracking activity**: Websites may use cookies to track user behavior for analytics or personalization purposes.
+    - **Remembering form inputs**: Cookies can be used to prefill form fields with values entered previously by the user.
+
+    Are All Cookies Safe to Use?
+    Not all cookies are inherently safe. Here are some security considerations:
+
+    - **Secure flag**: Cookies with the "Secure" flag are only sent over HTTPS, making them less vulnerable to interception.
+    - **HttpOnly flag**: Cookies with the "HttpOnly" flag cannot be accessed by client-side JavaScript, preventing them from being exploited by cross-site scripting (XSS) attacks.
+    - **Session Hijacking**: If a session cookie is intercepted, an attacker can impersonate the user.
+
+5. **How do I impelemt the checklist above step-by-step**
+
+    Already answered on top of this section 🙏😁
