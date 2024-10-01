@@ -744,143 +744,153 @@ We need to create a relationship between the two models. Specifically, this invo
     Already answered on top of this section 🙏😁
 
 
-##  Individual Assignment 4
+##  Individual Assignment 5
 
 Before we can implement any functions on our Project, in my case, we have to add Tailwind to our app inorder to help us on styling our app. We can do so as follows:
 
 1. Open Django project, in my case **PixelPlay**, open the `base.html` file on `/templates` folder on our root project.
 
 2. Add the Tailwind cdn script in the head section as follows:
-```bash
-...
-{% endblock meta %}
-<script src="https://cdn.tailwindcss.com">
-</script>
-</head>
-```
+
+    ```bash
+    ...
+    {% endblock meta %}
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    </head>
+    ```
+
 ### Implement New Functions 
 
 #### Implement Functions to Delete Products
 
 1. Open `views.py` file in the `main` folder, create a new function called `delete_product` that takes `request` and `id` as parameters. Edit as follows:
 
-```bash
-def delete_product(request, id):
-    product = Product.objects.get(pk=id) # Here is to get the product based on the id that we have made on the previous assignment
-    product.delete() 
-    return HttpResponseRedirect(reverse('main:show_main')) # Return to the home page
-```
+    ```bash
+    def delete_product(request, id):
+        product = Product.objects.get(pk=id) # Here is to get the product based on the id that we have made on the previous assignment
+        product.delete() 
+        return HttpResponseRedirect(reverse('main:show_main')) # Return to the home page
+    ```
 
 2. Don't forget to import the function by open `urls.py` in the `main` folder
 as follows:
-```bash
-from main.views import ..., delete_mood
-```
+
+    ```bash
+    from main.views import ..., delete_mood
+    ```
 
 3. Now we have to add the URL path to `urlpatterns` to access the imported function as follows:
-```bash
-...
-path('delete-product/<uuid:id>', delete_product, name='delete_product') # Don't forget to change the "id" data type, adjust it to match the data type on our models.py file
-...
-```
+
+    ```bash
+        ...
+        path('delete-product/<uuid:id>', delete_product, name='delete_product') # Don't forget to change the "id" data type, adjust it to match the data type on our models.py file
+        ...
+    ```
 
 4. Next is to open the `main.html` file in the `main/templates` folder and modify our existing code to implement a delete button for each product as follows:
-```bash
-...
-<tr>
+
+    ```bash
     ...
-    <td>
-        <a href="{% url 'main:delete_product' product.pk %}">
-            <button>
-                Delete
-            </button>
-        </a>
-    </td>
-</tr>
-...
-```
+    <tr>
+        ...
+        <td>
+            <a href="{% url 'main:delete_product' product.pk %}">
+                <button>
+                    Delete
+                </button>
+            </a>
+        </td>
+    </tr>
+    ...
+    ```
 
 #### Implement Functions to Edit Products
 
 1. Open `views.py` in the `main` directory, and create a new function named `edit_product` that takes `request` and `id` parameters as follows:
-```bash
-def edit_product(request, id):
-    # Get mood entry based on id
-    product = Product.objects.get(pk = id)
 
-    # Set product entry as an instance of the form
-    form = ProductForm(request.POST or None, instance=product)
+    ```bash
+    def edit_product(request, id):
+        # Get mood entry based on id
+        product = Product.objects.get(pk = id)
 
-    if form.is_valid() and request.method == "POST":
-        # Save form and return to home page
-        form.save()
-        return HttpResponseRedirect(reverse('main:show_main'))
+        # Set product entry as an instance of the form
+        form = ProductForm(request.POST or None, instance=product)
 
-    context = {'form': form}
-    return render(request, "edit_product.html", context)
-```
+        if form.is_valid() and request.method == "POST":
+            # Save form and return to home page
+            form.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
+
+        context = {'form': form}
+        return render(request, "edit_product.html", context)
+    ```
 
 2. Now create a new HTML file named `edit_product.html` in the `main/templates` directory. Fill in the file with the following code:
-```bash
-{% extends 'base.html' %}
 
-{% load static %}
+    ```bash
+    {% extends 'base.html' %}
 
-{% block content %}
+    {% load static %}
 
-<h1>Edit Product</h1>
+    {% block content %}
 
-<form method="POST">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-        <tr>
-            <td></td>
-            <td>
-                <input type="submit" value="Edit Product"/>
-            </td>
-        </tr>
-    </table>
-</form>
+    <h1>Edit Product</h1>
 
-{% endblock %}
-```
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Edit Product"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    {% endblock %}
+    ```
 
 3. Don't forget to import the function by open `urls.py` in the `main` folder
 as follows:
-```bash
-from main.views import ..., edit_product
-```
+
+    ```bash
+    from main.views import ..., edit_product
+    ```
 
 4. Now we have to add the URL path to `urlpatterns` to access the imported function as follows:
-```bash
-...
-path('edit-product/<uuid:id>', edit_product, name='edit_product') # Don't forget to change the "id" data type, adjust it to match the data type on our models.py file
-...
-```
+
+    ```bash
+    ...
+    path('edit-product/<uuid:id>', edit_product, name='edit_product') # Don't forget to change the "id" data type, adjust it to match the data type on our models.py file
+    ...
+    ```
 
 5. Next is to open the `main.html` file in the `main/templates` folder and modify our existing code to implement a delete button for each product as follows:
-```bash
-...
-<tr>
+
+    ```bash
     ...
-    <td>
-        <a href="{% url 'main:delete_product' product.pk %}">
-            <button>
-                Delete Product
-            </button>
-        </a>
-    </td>
-    <td>
-        <a href="{% url 'main:edit_product' product.pk %}">
-            <button>
-                Edit Product
-            </button>
-        </a>
-    </td>
-</tr>
-...
-```
+    <tr>
+        ...
+        <td>
+            <a href="{% url 'main:delete_product' product.pk %}">
+                <button>
+                    Delete Product
+                </button>
+            </a>
+        </td>
+        <td>
+            <a href="{% url 'main:edit_product' product.pk %}">
+                <button>
+                    Edit Product
+                </button>
+            </a>
+        </td>
+    </tr>
+    ...
+    ```
 
 ### Customize the *template* HTML Using Tailwind and External CSS
 
@@ -888,67 +898,71 @@ Before we continue, it's important that since we are deploying our project to a 
 from the disk making it efficient and easier to cache. To do so as follows:
 
 1. Open `settings.py` file in our project directory, in my case it's `PixelPlay`, then add *middleware* WhiteNoise like:
-```bash
-...
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+
+    ```bash
     ...
-]
-...
-```
+    MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'whitenoise.middleware.WhiteNoiseMiddleware',
+        ...
+    ]
+    ...
+    ```
+    
     Here, WhiteNoise serves to run the static file automatically without having to configure anything.
 
 2. Make sure that `STATIC_ROOT`, `STATICFILES_DIRS`, and `STATIC_URL` are configure as follows:
-```bash
-...
-STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = [
-        BASE_DIR / 'static' 
-    ]
-else:
-    STATIC_ROOT = BASE_DIR / 'static' 
-...
-```
+
+    ```bash
+    ...
+    STATIC_URL = '/static/'
+    if DEBUG:
+        STATICFILES_DIRS = [
+            BASE_DIR / 'static' 
+        ]
+    else:
+        STATIC_ROOT = BASE_DIR / 'static' 
+    ...
+    ```
 
 3. Since here I am using Tailwind and External CSS, we have to modify some code on our `base.html` file to accepts External CSS (since we have did Tailwind at the start, creating the external css file is on the next step) as follows:
-```bash
-...
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{% static 'css/global.css' %}"/>
-  </head>
-...
-```
+
+    ```bash
+    ...
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="{% static 'css/global.css' %}"/>
+    </head>
+    ...
+    ```
 
 4. Now create a new directory on the `root` of our project called `static` and inside that directory, create a new subdirectory called `css`. It should be Now inside the `css` directory, create a file called `global.css`. At the end it should look like `static/css/global.css`. Now modify the `global.css` file that servers as a *custom styling* that I have made as follows:
-```bash
-.form-style form input, form textarea, form select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #4a4a4a; 
-  border-radius: 0.5rem; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-}
+    ```bash
+    .form-style form input, form textarea, form select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #4a4a4a; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    }
 
-.form-style form input:focus, form textarea:focus, form select:focus {
-  outline: none;
-  border-color: #4a90e2;
-  background-color: #f0f8ff;
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5);
-}
+    .form-style form input:focus, form textarea:focus, form select:focus {
+    outline: none;
+    border-color: #4a90e2;
+    background-color: #f0f8ff;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5);
+    }
 
-@keyframes shine {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
+    @keyframes shine {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+    }
 
-.animate-shine {
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.3));
-  background-size: 200% 100%;
-  animation: shine 2s infinite; 
-}
-```
+    .animate-shine {
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.3));
+    background-size: 200% 100%;
+    animation: shine 2s infinite; 
+    }
+    ```
 
     Now we can move on to styling our pages
 
