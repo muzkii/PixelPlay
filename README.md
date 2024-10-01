@@ -1536,19 +1536,22 @@ Now we are officially done and we have just made our website more attractive!
     **Differences**
 
     Margin : 
--       Controls the space outside the border.
--       Affects the distance between elements.
--       Does not affect the size of the element itself.
+
+    - Controls the space outside the border.
+    - Affects the distance between elements.
+    - Does not affect the size of the element itself.
 
     Border :
--       A visual line that wraps around the padding and content.
--       Can have styles, width, and color.
--       Affects the overall size of the element (thicker borders will increase the element's size).
+
+    - A visual line that wraps around the padding and content.
+    - Can have styles, width, and color.
+    - Affects the overall size of the element (thicker borders will increase the element's size).
     
     Padding :
--       Controls the space inside the border.
--       Affects the space between the content and the border, making the content look less crowded.
--       Increases the size of the element without changing the outer margin.
+    
+    - Controls the space inside the border.
+    - Affects the space between the content and the border, making the content look less crowded.
+    - Increases the size of the element without changing the outer margin.
 
 4. **Explain the concepts of flex box and grid layout along with their uses!**
 
