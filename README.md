@@ -1213,8 +1213,10 @@ Before we can continue to customize our add product page, we have to create a na
     {% endblock content%}
     ```
 
-    #### Customizing Create Product Page
-    Open the `create_product.html` file and change the code as follows:
+#### Customizing Create Product Page
+
+Open the `create_product.html` file and change the code as follows:
+
     ```bash
     {% extends 'base.html' %}
     {% load static %}
@@ -1228,7 +1230,7 @@ Before we can continue to customize our add product page, we have to create a na
     <div class="flex flex-col min-h-screen bg-gray-100">
     <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
         <h1 class="text-3xl font-bold text-center mb-8 text-black">Create Product</h1>
-    
+
         <div class="bg-gradient-to-r from-orange-400 to-teal-400 shadow-md rounded-lg p-6 form-style">
         <form method="POST" class="space-y-6">
             {% csrf_token %}
@@ -1262,6 +1264,7 @@ Before we can continue to customize our add product page, we have to create a na
     ```
 
 #### Cuztomizing Edit Product Page
+
 Open the `edit_product.html` file and change the code as follows:
 
     ```bash
