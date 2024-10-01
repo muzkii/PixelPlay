@@ -1448,76 +1448,79 @@ Now we are officially done and we have just made our website more attractive!
 
     Because it ensures that a website or web application can provide and improve user experience across any devices, in our case accross desktop computers to tablets and smartphones. Responsive design also allows content to be flexible without the need for updates and versions of the same website.
 
-        Examples of Application with Responsive Design:
-        1. Tokopedia
-                Tokopedia adjusts its layout to fit various screen sizes. Even on mobile devices, the screen resolution of let's say and Iphone and Android are different, but Tokopedia manages to provide user with optimized sidebars and navigation options.
-        2. Twitter (X)
-                Twitter (X) being a Social Media can change its layout based on mobile or dekstop, there are some unofficial sources online that say Twitter (X) can be run on Smartfridges.
-        
-        Examples of Application **without** Responsive Design:
-        1. Some University's Faculty Websites
-                Older universities websites might not have responsive layouts. These systems are designed for desktop users, without constant updates, making them difficult to navigate on smaller screens.
+    Examples of Application with Responsive Design:
+    
+    1. Tokopedia
+            Tokopedia adjusts its layout to fit various screen sizes. Even on mobile devices, the screen resolution of let's say and Iphone and Android are different, but Tokopedia manages to provide user with optimized sidebars and navigation options.
+
+    2. Twitter (X)
+            Twitter (X) being a Social Media can change its layout based on mobile or dekstop, there are some unofficial sources online that say Twitter (X) can be run on Smartfridges.
+    
+    Examples of Application **without** Responsive Design:
+
+    1. Some University's Faculty Websites
+            Older universities websites might not have responsive layouts. These systems are designed for desktop users, without constant updates, making them difficult to navigate on smaller screens.
 
 3. ** Explain the differences between margin, border, and padding, and how to implement these three things!**
 
     1. Margin : The margin is the outermost space that separates an element from its neighboring elements. It defines the space outside the border of an element. Margins are used to create space between different elements on the page, preventing them from touching or overlapping.
     Implementation : 
         
-    ```bash
-            /* Apply the same margin to all sides */
-    .element {
-        margin: 20px;
-    }
+        ```bash
+                /* Apply the same margin to all sides */
+        .element {
+            margin: 20px;
+        }
 
-    /* Different margins for each side */
-    .element {
-        margin-top: 10px;
-        margin-right: 15px;
-        margin-bottom: 20px;
-        margin-left: 25px;
-    }
+        /* Different margins for each side */
+        .element {
+            margin-top: 10px;
+            margin-right: 15px;
+            margin-bottom: 20px;
+            margin-left: 25px;
+        }
 
-    /* Center an element horizontally */
-    .centered {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    ```
+        /* Center an element horizontally */
+        .centered {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        ```
 
 
     2. Border : The border is the line that wraps around the element’s content and padding. It lies between the margin and the padding. Borders are used to visually separate or highlight an element. Borders can have different styles (solid, dashed, dotted, etc.) and can be of varying widths and colors.
     Implementation : 
-    ```bash
-            /* Simple border for all sides */
-    .element {
-        border: 2px solid black;
-    }
+        ```bash
+                /* Simple border for all sides */
+        .element {
+            border: 2px solid black;
+        }
 
-    /* Different borders for each side */
-    .element {
-        border-top: 5px dashed red;
-        border-right: 2px solid blue;
-        border-bottom: 3px dotted green;
-        border-left: 1px solid black;
-    }
-    ```
+        /* Different borders for each side */
+        .element {
+            border-top: 5px dashed red;
+            border-right: 2px solid blue;
+            border-bottom: 3px dotted green;
+            border-left: 1px solid black;
+        }
+        ```
 
     3. Padding : The padding is the space between the content of an element and its border. It creates space inside the element, pushing the content away from the edges. Padding is used to create space inside an element to make the content look more visually appealing, preventing the text or images from sticking too closely to the border.
     Implementation :
-    ```bash
-            /* Same padding for all sides */
-    .element {
-        padding: 15px;
-    }
+        ```bash
+                /* Same padding for all sides */
+        .element {
+            padding: 15px;
+        }
 
-    /* Different padding for each side */
-    .element {
-        padding-top: 10px;
-        padding-right: 20px;
-        padding-bottom: 15px;
-        padding-left: 25px;
-    }
-    ```
+        /* Different padding for each side */
+        .element {
+            padding-top: 10px;
+            padding-right: 20px;
+            padding-bottom: 15px;
+            padding-left: 25px;
+        }
+        ```
 
     **Differences**
 
@@ -1550,6 +1553,6 @@ Now we are officially done and we have just made our website more attractive!
         
         Grid is a two-dimensional layout system, meaning it can handle layouts in both rows and columns simultaneously. CSS Grid is more suitable for more complex, grid-based designs, where control over both axes (horizontal and vertical) is required.
 
-5. **How do I impelemt the checklist above step-by-step**
+5. **How do I implement the checklist above step-by-step**
 
     Already answered on top of this section 🙏😁
