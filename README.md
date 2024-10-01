@@ -1453,20 +1453,22 @@ Now we are officially done and we have just made our website more attractive!
 
     Examples of Application with Responsive Design:
     
-    1. Tokopedia
+    1. Tokopedia <br>
             Tokopedia adjusts its layout to fit various screen sizes. Even on mobile devices, the screen resolution of let's say and Iphone and Android are different, but Tokopedia manages to provide user with optimized sidebars and navigation options.
 
-    2. Twitter (X)
+    2. Twitter (X) <br>
             Twitter (X) being a Social Media can change its layout based on mobile or dekstop, there are some unofficial sources online that say Twitter (X) can be run on Smartfridges.
     
     Examples of Application **without** Responsive Design:
 
-    1. Some University's Faculty Websites
+    1. Some University's Faculty Websites <br>
             Older universities websites might not have responsive layouts. These systems are designed for desktop users, without constant updates, making them difficult to navigate on smaller screens.
 
 3. ** Explain the differences between margin, border, and padding, and how to implement these three things!**
 
-    1. Margin : The margin is the outermost space that separates an element from its neighboring elements. It defines the space outside the border of an element. Margins are used to create space between different elements on the page, preventing them from touching or overlapping.
+    1. Margin : <br>
+        The margin is the outermost space that separates an element from its neighboring elements. It defines the space outside the border of an element. Margins are used to create space between different elements on the page, preventing them from touching or overlapping.
+
     Implementation : 
         
         ```bash
@@ -1491,7 +1493,10 @@ Now we are officially done and we have just made our website more attractive!
         ```
 
 
-    2. Border : The border is the line that wraps around the element’s content and padding. It lies between the margin and the padding. Borders are used to visually separate or highlight an element. Borders can have different styles (solid, dashed, dotted, etc.) and can be of varying widths and colors.
+    2. Border : <br>
+    
+        The border is the line that wraps around the element’s content and padding. It lies between the margin and the padding. Borders are used to visually separate or highlight an element. Borders can have different styles (solid, dashed, dotted, etc.) and can be of varying widths and colors.
+
     Implementation : 
         ```bash
                 /* Simple border for all sides */
@@ -1508,7 +1513,10 @@ Now we are officially done and we have just made our website more attractive!
         }
         ```
 
-    3. Padding : The padding is the space between the content of an element and its border. It creates space inside the element, pushing the content away from the edges. Padding is used to create space inside an element to make the content look more visually appealing, preventing the text or images from sticking too closely to the border.
+    3. Padding : <br>
+    
+        The padding is the space between the content of an element and its border. It creates space inside the element, pushing the content away from the edges. Padding is used to create space inside an element to make the content look more visually appealing, preventing the text or images from sticking too closely to the border.
+
     Implementation :
         ```bash
                 /* Same padding for all sides */
@@ -1528,19 +1536,19 @@ Now we are officially done and we have just made our website more attractive!
     **Differences**
 
     Margin : 
-        - Controls the space outside the border.
-        - Affects the distance between elements.
-        - Does not affect the size of the element itself.
+-       Controls the space outside the border.
+-       Affects the distance between elements.
+-       Does not affect the size of the element itself.
 
     Border :
-        - A visual line that wraps around the padding and content.
-        - Can have styles, width, and color.
-        - Affects the overall size of the element (thicker borders will increase the element's size).
+-       A visual line that wraps around the padding and content.
+-       Can have styles, width, and color.
+-       Affects the overall size of the element (thicker borders will increase the element's size).
     
     Padding :
-        - Controls the space inside the border.
-        - Affects the space between the content and the border, making the content look less crowded.
-        - Increases the size of the element without changing the outer margin.
+-       Controls the space inside the border.
+-       Affects the space between the content and the border, making the content look less crowded.
+-       Increases the size of the element without changing the outer margin.
 
 4. **Explain the concepts of flex box and grid layout along with their uses!**
 
