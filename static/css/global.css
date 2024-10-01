@@ -1,0 +1,25 @@
+.form-style form input, form textarea, form select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #4a4a4a; 
+  border-radius: 0.5rem; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+.form-style form input:focus, form textarea:focus, form select:focus {
+  outline: none;
+  border-color: #4a90e2;
+  background-color: #f0f8ff;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5);
+}
+
+@keyframes shine {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shine {
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.3));
+  background-size: 200% 100%;
+  animation: shine 2s infinite; 
+}
