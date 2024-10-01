@@ -970,454 +970,464 @@ from the disk making it efficient and easier to cache. To do so as follows:
 
 Open the `login.html` file and change the code as follows:
 
-```bash
-{% extends 'base.html' %}
+    ```bash
+    {% extends 'base.html' %}
 
-{% block meta %}
-<title>Login</title>
-{% endblock meta %}
+    {% block meta %}
+    <title>Login</title>
+    {% endblock meta %}
 
-{% block content %}
-<div class="min-h-screen flex items-center justify-center w-screen bg-gradient-to-r from-orange-400 to-teal-400 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full bg-white shadow-lg rounded-lg p-8 space-y-8">
-    <h2 class="mt-6 text-center text-gray-800 text-3xl font-bold">
-      Welcome Back
-    </h2>
-    <form class="mt-8 space-y-6" method="POST" action="">
-      {% csrf_token %}
-      <input type="hidden" name="remember" value="true">
-      <div class="rounded-md shadow-sm -space-y-px">
-        <div>
-          <label for="username" class="sr-only">Username</label>
-          <input id="username" name="username" type="text" required class="appearance-none rounded-lg relative block w-full px-4 py-3 mb-4 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Username">
+    {% block content %}
+    <div class="min-h-screen flex items-center justify-center w-screen bg-gradient-to-r from-orange-400 to-teal-400 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full bg-white shadow-lg rounded-lg p-8 space-y-8">
+        <h2 class="mt-6 text-center text-gray-800 text-3xl font-bold">
+        Welcome Back
+        </h2>
+        <form class="mt-8 space-y-6" method="POST" action="">
+        {% csrf_token %}
+        <input type="hidden" name="remember" value="true">
+        <div class="rounded-md shadow-sm -space-y-px">
+            <div>
+            <label for="username" class="sr-only">Username</label>
+            <input id="username" name="username" type="text" required class="appearance-none rounded-lg relative block w-full px-4 py-3 mb-4 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Username">
+            </div>
+            <div>
+            <label for="password" class="sr-only">Password</label>
+            <input id="password" name="password" type="password" required class="appearance-none rounded-lg relative block w-full px-4 py-3 mb-4 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Password">
+            </div>
         </div>
+        
+
         <div>
-          <label for="password" class="sr-only">Password</label>
-          <input id="password" name="password" type="password" required class="appearance-none rounded-lg relative block w-full px-4 py-3 mb-4 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" placeholder="Password">
+            <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+            Log In
+            </button>
         </div>
-      </div>
-      
+        </form>
 
-      <div>
-        <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-          Log In
-        </button>
-      </div>
-    </form>
-
-    {% if messages %}
-    <div class="mt-4">
-      {% for message in messages %}
-        {% if message.tags == "success" %}
-          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-              <span class="block sm:inline">{{ message }}</span>
-          </div>
-        {% elif message.tags == "error" %}
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <span class="block sm:inline">{{ message }}</span>
-          </div>
-        {% else %}
-          <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
-              <span class="block sm:inline">{{ message }}</span>
-          </div>
+        {% if messages %}
+        <div class="mt-4">
+        {% for message in messages %}
+            {% if message.tags == "success" %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+            {% elif message.tags == "error" %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+            {% else %}
+            <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </div>
         {% endif %}
-      {% endfor %}
-    </div>
-    {% endif %}
 
-    <div class="text-center mt-4">
-      <p class="text-sm text-gray-600">
-        Don't have an account?
-        <a href="{% url 'main:register' %}" class="font-medium text-orange-600 hover:text-orange-500">
-          Sign Up Here
-        </a>
-      </p>
+        <div class="text-center mt-4">
+        <p class="text-sm text-gray-600">
+            Don't have an account?
+            <a href="{% url 'main:register' %}" class="font-medium text-orange-600 hover:text-orange-500">
+            Sign Up Here
+            </a>
+        </p>
+        </div>
     </div>
-  </div>
-</div>
-{% endblock content %}
-```
+    </div>
+    {% endblock content %}
+    ```
 
 #### Customizing Register Page
 
 Open the `login.html` file and change the code as follows:
 
-```bash
+    ```bash
 
-{% extends 'base.html' %}
+    {% extends 'base.html' %}
 
-{% block meta %}
-<title>Register</title>
-{% endblock meta %}
+    {% block meta %}
+    <title>Register</title>
+    {% endblock meta %}
 
-{% block content %}
-<div class="min-h-screen flex items-center justify-center bg-teal-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8 form-style">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-teal-700">
-        Create your account
-      </h2>
-    </div>
-    <form class="mt-8 space-y-6" method="POST">
-      {% csrf_token %}
-      <input type="hidden" name="remember" value="true">
-      <div class="rounded-md shadow-sm -space-y-px">
-        {% for field in form %}
-          <div class="{% if not forloop.first %}mt-4{% endif %}">
-            <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-black">
-              {{ field.label }}
-            </label>
-            <div class="relative">
-              {{ field }}
-              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+    {% block content %}
+    <div class="min-h-screen flex items-center justify-center bg-teal-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 form-style">
+        <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-teal-700">
+            Create your account
+        </h2>
+        </div>
+        <form class="mt-8 space-y-6" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="remember" value="true">
+        <div class="rounded-md shadow-sm -space-y-px">
+            {% for field in form %}
+            <div class="{% if not forloop.first %}mt-4{% endif %}">
+                <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-black">
+                {{ field.label }}
+                </label>
+                <div class="relative">
+                {{ field }}
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    {% if field.errors %}
+                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    {% endif %}
+                </div>
+                </div>
                 {% if field.errors %}
-                  <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                  </svg>
+                {% for error in field.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                {% endfor %}
                 {% endif %}
-              </div>
             </div>
-            {% if field.errors %}
-              {% for error in field.errors %}
-                <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-              {% endfor %}
-            {% endif %}
-          </div>
+            {% endfor %}
+        </div>
+
+        <div>
+            <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+            Register
+            </button>
+        </div>
+        </form>
+
+        {% if messages %}
+        <div class="mt-4">
+        {% for message in messages %}
+        <div class="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ message }}</span>
+        </div>
         {% endfor %}
-      </div>
+        </div>
+        {% endif %}
 
-      <div>
-        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-          Register
-        </button>
-      </div>
-    </form>
-
-    {% if messages %}
-    <div class="mt-4">
-      {% for message in messages %}
-      <div class="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded relative" role="alert">
-        <span class="block sm:inline">{{ message }}</span>
-      </div>
-      {% endfor %}
+        <div class="text-center mt-4">
+        <p class="text-sm text-black">
+            Already have an account?
+            <a href="{% url 'main:login' %}" class="font-medium text-orange-600 hover:text-orange-700">
+            Login here
+            </a>
+        </p>
+        </div>
     </div>
-    {% endif %}
-
-    <div class="text-center mt-4">
-      <p class="text-sm text-black">
-        Already have an account?
-        <a href="{% url 'main:login' %}" class="font-medium text-orange-600 hover:text-orange-700">
-          Login here
-        </a>
-      </p>
     </div>
-  </div>
-</div>
-{% endblock content %}
-```
+    {% endblock content %}
+    ```
 
 #### Creating Navigation Bar 
-    Before we can continue to customize our add product page, we have to create a navigation bar since cuztomizing the add product page would means that we need the navigation bar itself first, here's how to implement it:
+
+Before we can continue to customize our add product page, we have to create a navigation bar since cuztomizing the add product page would means that we need the navigation bar itself first, here's how to implement it:
 
 1. Open the `templates/` folder in the `root` directory, the same directory that we have our `base.html` file, and create a new file called `navbar.html` with contents as follows:
-```bash
-<nav class="bg-teal-600 shadow-lg fixed top-0 left-0 z-40 w-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            <div class="flex items-center">
-                <h1 class="text-xl font-bold text-center text-green-50 tracking-widest">
-                    P I X E L &nbsp; P L A Y
-                </h1>
-                
+
+    ```bash
+    <nav class="bg-teal-600 shadow-lg fixed top-0 left-0 z-40 w-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-center text-green-50 tracking-widest">
+                        P I X E L &nbsp; P L A Y
+                    </h1>
+                    
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <!-- Links with hover effects -->
+                    <span class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Home</span>
+                    <span class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Products</span>
+                    <span class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Categories</span>
+                    <span class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Cart</span>
+
+                    {% if user.is_authenticated %}
+                    <span class="text-white font-bold py-2 px-4 rounded-lg">
+                        Welcome, {{ user.username }}
+                    </span>                                
+                        <a href="{% url 'main:logout' %}" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                            Logout
+                        </a>
+                    {% else %}
+                        <a href="{% url 'main:login' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 mr-2">
+                            Login
+                        </a>
+                        <a href="{% url 'main:register' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                            Register
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="hidden md:flex items-center space-x-4">
-                <!-- Links with hover effects -->
-                <span class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Home</span>
-                <span class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Products</span>
-                <span class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Categories</span>
-                <span class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Cart</span>
+        </div>
+        <!-- Mobile menu -->
+        <div class="mobile-menu hidden md:hidden px-4 w-full md:max-w-full">
+            <div class="pt-2 pb-3 space-y-1 mx-auto">
+                <!-- Mobile links with hover effects -->
+                <span class="block bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Home</span>
+                <span class="block bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Products</span>
+                <span class="block bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Categories</span>
+                <span class="block bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Cart</span>
 
                 {% if user.is_authenticated %}
                 <span class="text-white font-bold py-2 px-4 rounded-lg">
                     Welcome, {{ user.username }}
-                </span>                                
-                    <a href="{% url 'main:logout' %}" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                </span>              
+                    <a href="{% url 'main:logout' %}" class="block bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
                         Logout
                     </a>
                 {% else %}
-                    <a href="{% url 'main:login' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 mr-2">
+                    <a href="{% url 'main:login' %}" class="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 mb-2">
                         Login
                     </a>
-                    <a href="{% url 'main:register' %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+                    <a href="{% url 'main:register' %}" class="block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
                         Register
                     </a>
                 {% endif %}
             </div>
-            <div class="md:hidden flex items-center">
-                <button class="mobile-menu-button">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
         </div>
-    </div>
-    <!-- Mobile menu -->
-    <div class="mobile-menu hidden md:hidden px-4 w-full md:max-w-full">
-        <div class="pt-2 pb-3 space-y-1 mx-auto">
-            <!-- Mobile links with hover effects -->
-            <span class="block bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Home</span>
-            <span class="block bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Products</span>
-            <span class="block bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Categories</span>
-            <span class="block bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Cart</span>
+        <script>
+        const btn = document.querySelector("button.mobile-menu-button");
+        const menu = document.querySelector(".mobile-menu");
+        
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+        </script>
+    </nav>
+    ```
 
-            {% if user.is_authenticated %}
-            <span class="text-white font-bold py-2 px-4 rounded-lg">
-                Welcome, {{ user.username }}
-            </span>              
-                <a href="{% url 'main:logout' %}" class="block bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
-                    Logout
-                </a>
-            {% else %}
-                <a href="{% url 'main:login' %}" class="block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 mb-2">
-                    Login
-                </a>
-                <a href="{% url 'main:register' %}" class="block bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
-                    Register
-                </a>
-            {% endif %}
-        </div>
-    </div>
-    <script>
-      const btn = document.querySelector("button.mobile-menu-button");
-      const menu = document.querySelector(".mobile-menu");
-    
-      btn.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-      });
-    </script>
-</nav>
-```
     Here, we would have a responsive navigation bar for both desktop and mobile versions.
 
 2. Now, don't forget to link the navigation bar to `main.html`, `edit_product.html`, and `create_product.html` inside the `main` directory on the `templates` subdirectory using the include `tags` at the top like:
-```bash
-{% extends 'base.html' %}
-{% block content %}
-{% include 'navbar.html' %}
-...
-{% endblock content%}
-```
 
-#### Customizing Create Product Page
-Open the `create_product.html` file and change the code as follows:
-```bash
-{% extends 'base.html' %}
-{% load static %}
-{% block meta %}
-<title>Create Product</title>
-{% endblock meta %}
+    ```bash
+    {% extends 'base.html' %}
+    {% block content %}
+    {% include 'navbar.html' %}
+    ...
+    {% endblock content%}
+    ```
 
-{% block content %}
-{% include 'navbar.html' %} # That we have added earlier
+    #### Customizing Create Product Page
+    Open the `create_product.html` file and change the code as follows:
+    ```bash
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block meta %}
+    <title>Create Product</title>
+    {% endblock meta %}
 
-<div class="flex flex-col min-h-screen bg-gray-100">
-  <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
-    <h1 class="text-3xl font-bold text-center mb-8 text-black">Create Product</h1>
-  
-    <div class="bg-gradient-to-r from-orange-400 to-teal-400 shadow-md rounded-lg p-6 form-style">
-      <form method="POST" class="space-y-6">
-        {% csrf_token %}
-        {% for field in form %}
-          <div class="flex flex-col">
-            <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
-              {{ field.label }}
-            </label>
-            <div class="w-full">
-              {{ field }}
+    {% block content %}
+    {% include 'navbar.html' %} # That we have added earlier
+
+    <div class="flex flex-col min-h-screen bg-gray-100">
+    <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
+        <h1 class="text-3xl font-bold text-center mb-8 text-black">Create Product</h1>
+    
+        <div class="bg-gradient-to-r from-orange-400 to-teal-400 shadow-md rounded-lg p-6 form-style">
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="flex flex-col">
+                <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
+                {{ field.label }}
+                </label>
+                <div class="w-full">
+                {{ field }}
+                </div>
+                {% if field.help_text %}
+                <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                {% endfor %}
             </div>
-            {% if field.help_text %}
-              <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
-            {% endif %}
-            {% for error in field.errors %}
-              <p class="mt-1 text-sm text-red-600">{{ error }}</p>
             {% endfor %}
-          </div>
-        {% endfor %}
-        <div class="flex justify-center mt-6">
-          <button type="submit" class="bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out w-full">
-            Create Product
-          </button>
+            <div class="flex justify-center mt-6">
+            <button type="submit" class="bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out w-full">
+                Create Product
+            </button>
+            </div>
+        </form>
         </div>
-      </form>
     </div>
-  </div>
-</div>
+    </div>
 
-{% endblock %}
-```
+    {% endblock %}
+    ```
 
 #### Cuztomizing Edit Product Page
 Open the `edit_product.html` file and change the code as follows:
-```bash
-{% extends 'base.html' %}
-{% load static %}
-{% block meta %}
-<title>Edit Product</title>
-{% endblock meta %}
 
-{% block content %}
-{% include 'navbar.html' %}
-<div class="flex flex-col min-h-screen bg-gray-100">
-  <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
-    <h1 class="text-3xl font-bold text-center mb-8 text-black">Edit Mood Entry</h1>
-  
-    <div class="bg-gradient-to-r from-orange-400 to-teal-400 shadow-md rounded-lg p-6 form-style">
-      <form method="POST" class="space-y-6">
-          {% csrf_token %}
-          {% for field in form %}
-              <div class="flex flex-col">
-                  <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
-                      {{ field.label }}
-                  </label>
-                  <div class="w-full">
-                      {{ field }}
-                  </div>
-                  {% if field.help_text %}
-                      <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
-                  {% endif %}
-                  {% for error in field.errors %}
-                      <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-                  {% endfor %}
-              </div>
-          {% endfor %}
-          <div class="flex justify-center mt-6">
-              <button type="submit" class="bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out w-full">
-                  Edit Mood Entry
-              </button>
-          </div>
-      </form>
-  </div>
-  </div>
-</div>
-{% endblock %}
-```
+    ```bash
+    {% extends 'base.html' %}
+    {% load static %}
+    {% block meta %}
+    <title>Edit Product</title>
+    {% endblock meta %}
+
+    {% block content %}
+    {% include 'navbar.html' %}
+    <div class="flex flex-col min-h-screen bg-gray-100">
+    <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
+        <h1 class="text-3xl font-bold text-center mb-8 text-black">Edit Mood Entry</h1>
+    
+        <div class="bg-gradient-to-r from-orange-400 to-teal-400 shadow-md rounded-lg p-6 form-style">
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="flex flex-col">
+                    <label for="{{ field.id_for_label }}" class="mb-2 font-semibold text-gray-700">
+                        {{ field.label }}
+                    </label>
+                    <div class="w-full">
+                        {{ field }}
+                    </div>
+                    {% if field.help_text %}
+                        <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="flex justify-center mt-6">
+                <button type="submit" class="bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 ease-in-out w-full">
+                    Edit Mood Entry
+                </button>
+            </div>
+        </form>
+    </div>
+    </div>
+    </div>
+    {% endblock %}
+    ```
 
 #### Cuztomizing Product List Page
-    Because we want to make it so that our products are listed as attractive and responsive, with an additional info that if there are no products, the product list would display an image and a message that no products are registers, we can implement it as follows
+
+Because we want to make it so that our products are listed as attractive and responsive, with an additional info that if there are no products, the product list would display an image and a message that no products are registers, we can implement it as follows
 
 1. Firsly, we create a new file called `card_info.html` inside the `main` directory on the `templates` subdirectory, then fill it in with the following HTML code:
-```bash
-<div class="bg-orange-600 rounded-xl overflow-hidden border-2 border-teal-800">
-    <div class="p-4 animate-shine">
-      <h5 class="text-lg font-semibold text-white">{{ title }}</h5>
-      <p class="text-teal-100">{{ value }}</p>
+
+    ```bash
+    <div class="bg-orange-600 rounded-xl overflow-hidden border-2 border-teal-800">
+        <div class="p-4 animate-shine">
+        <h5 class="text-lg font-semibold text-white">{{ title }}</h5>
+        <p class="text-teal-100">{{ value }}</p>
+        </div>
     </div>
-  </div>
-```
+    ```
 
 2. Next, we would make a new file called `card_product.html` in the same directory as before, and add the following code to display our products as a card like table:
-```bash
-<div class="relative break-inside-avoid transition-transform transform hover:scale-105 duration-300 shadow-lg">
-    <div class="relative bg-white border-2 border-teal-300 rounded-lg overflow-hidden h-full">
-      <!-- Placeholder for product image -->
-      <div class="bg-teal-100 h-40 flex items-center justify-center">
-        <span class="text-teal-700 font-bold text-2xl">{{ product_entry.category|title }}</span>
-      </div>
-  
-      <!-- Product Details -->
-      <div class="p-4">
-        <h3 class="font-bold text-2xl text-teal-600 mb-1">{{ product_entry.name }}</h3>
-        <p class="text-gray-700 text-lg mb-2">Rp{{ product_entry.price }},00 </p>
-        <p class="text-sm text-gray-600">{{ product_entry.description|truncatewords:15 }}</p>
-  
-        <!-- Rating and Stock -->
-        <div class="mt-4 flex items-center justify-between">
-          <div class="flex items-center space-x-1">
-            {% if product_entry.is_high_rating %}
-              <span class="text-yellow-500 font-bold">★</span>
-              <span class="text-gray-800 text-sm">{{ product_entry.rating }}</span>
-            {% else %}
-              <span class="text-gray-500 text-sm">Rating: {{ product_entry.rating }}</span>
-            {% endif %}
-          </div>
-          <div class="text-sm {{ product_entry.stock|yesno:'text-green-500,text-red-500' }}">
-            Stock: {{ product_entry.stock }}
-          </div>
+
+    ```bash
+    <div class="relative break-inside-avoid transition-transform transform hover:scale-105 duration-300 shadow-lg">
+        <div class="relative bg-white border-2 border-teal-300 rounded-lg overflow-hidden h-full">
+        <!-- Placeholder for product image -->
+        <div class="bg-teal-100 h-40 flex items-center justify-center">
+            <span class="text-teal-700 font-bold text-2xl">{{ product_entry.category|title }}</span>
         </div>
-      </div>
-  
-      <!-- Buttons (Edit/Delete) -->
-      <div class="absolute top-2 right-2 flex space-x-1">
-        <a href="{% url 'main:edit_product' product_entry.pk %}" class="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-2 transition duration-300 shadow-md">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-          </svg>
-        </a>
-        <a href="{% url 'main:delete_product' product_entry.pk %}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-          </svg>
-        </a>
-      </div>
+    
+        <!-- Product Details -->
+        <div class="p-4">
+            <h3 class="font-bold text-2xl text-teal-600 mb-1">{{ product_entry.name }}</h3>
+            <p class="text-gray-700 text-lg mb-2">Rp{{ product_entry.price }},00 </p>
+            <p class="text-sm text-gray-600">{{ product_entry.description|truncatewords:15 }}</p>
+    
+            <!-- Rating and Stock -->
+            <div class="mt-4 flex items-center justify-between">
+            <div class="flex items-center space-x-1">
+                {% if product_entry.is_high_rating %}
+                <span class="text-yellow-500 font-bold">★</span>
+                <span class="text-gray-800 text-sm">{{ product_entry.rating }}</span>
+                {% else %}
+                <span class="text-gray-500 text-sm">Rating: {{ product_entry.rating }}</span>
+                {% endif %}
+            </div>
+            <div class="text-sm {{ product_entry.stock|yesno:'text-green-500,text-red-500' }}">
+                Stock: {{ product_entry.stock }}
+            </div>
+            </div>
+        </div>
+    
+        <!-- Buttons (Edit/Delete) -->
+        <div class="absolute top-2 right-2 flex space-x-1">
+            <a href="{% url 'main:edit_product' product_entry.pk %}" class="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+            </svg>
+            </a>
+            <a href="{% url 'main:delete_product' product_entry.pk %}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            </a>
+        </div>
+        </div>
     </div>
-  </div>
-```
+    ```
+
     Now in this case, we have customized our `main` page such that we would display the products as a card and added edit and delete buttons on the top right of the cards.
 
 3. Now to add an image if there are no products available. Here I used a famous video game character, called *Pathfinder* from the game *Apex Legends* displaying a sad face. I renamed the `png` file as `sad-pathfinder.png`. Now we have to modify `main.html` so that it can use the `card_info.html`, `card_product.html` and the sad `png` file. Remember that `main.html` is in the same directory that we are currently modifying that is `main/templates`. Change the `main.html` file as follows:
-```bash
-{% extends 'base.html' %}
-{% load static %}
 
-{% block meta %}
-<title>Pixel Play</title>
-{% endblock meta %}
+    ```bash
+    {% extends 'base.html' %}
+    {% load static %}
 
-{% block content %}
-{% include 'navbar.html' %}
-<div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-gray-100 flex flex-col">
-  <div class="p-2 mb-6 relative">
-    <div class="relative grid grid-cols-1 z-30 md:grid-cols-3 gap-8">
-      {% include "card_info.html" with title='NPM' value=npm %}
-      {% include "card_info.html" with title='Name' value=name %}
-      {% include "card_info.html" with title='Class' value=class %}
+    {% block meta %}
+    <title>Pixel Play</title>
+    {% endblock meta %}
+
+    {% block content %}
+    {% include 'navbar.html' %}
+    <div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-gray-100 flex flex-col">
+    <div class="p-2 mb-6 relative">
+        <div class="relative grid grid-cols-1 z-30 md:grid-cols-3 gap-8">
+        {% include "card_info.html" with title='NPM' value=npm %}
+        {% include "card_info.html" with title='Name' value=name %}
+        {% include "card_info.html" with title='Class' value=class %}
+        </div>
+        <div class="w-full px-6 absolute top-[44px] left-0 z-20 hidden md:flex">
+        <div class="w-full min-h-4 bg-teal-600"></div>
+        </div>
+        <div class="h-full w-full py-6 absolute top-0 left-0 z-20 md:hidden flex">
+        <div class="h-full min-w-4 bg-teal-600 mx-auto"></div>
+        </div>
     </div>
-    <div class="w-full px-6 absolute top-[44px] left-0 z-20 hidden md:flex">
-      <div class="w-full min-h-4 bg-teal-600"></div>
-    </div>
-    <div class="h-full w-full py-6 absolute top-0 left-0 z-20 md:hidden flex">
-      <div class="h-full min-w-4 bg-teal-600 mx-auto"></div>
-    </div>
-  </div>
 
-  <div class="px-3 mb-4">
-    <div class="flex rounded-md items-center bg-teal-600 py-2 px-4 w-fit">
-      <h1 class="text-white text-center">Last Login: {{last_login}}</h1>
+    <div class="px-3 mb-4">
+        <div class="flex rounded-md items-center bg-teal-600 py-2 px-4 w-fit">
+        <h1 class="text-white text-center">Last Login: {{last_login}}</h1>
+        </div>
     </div>
-  </div>
 
-  <div class="flex justify-end mb-6">
-    <a href="{% url 'main:create_product' %}" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
-        Add New Product
-    </a>
-  </div>
+    <div class="flex justify-end mb-6">
+        <a href="{% url 'main:create_product' %}" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+            Add New Product
+        </a>
+    </div>
 
-  {% if not products %}
-  <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
-    <img src="{% static 'image/sad-pathfinder.png' %}" alt="Sad face" class="w-120 h-50 mb-4"/>
-    <p class="text-center text-gray-600 mt-4">There are no products available.</p>
-  </div>
-  {% else %}
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-    {% for product in products %}
-        {% include 'card_product.html' with product_entry=product %}
-    {% endfor %}
-  </div>
-  {% endif %}
-</div>
-{% endblock content %}
-```
+    {% if not products %}
+    <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+        <img src="{% static 'image/sad-pathfinder.png' %}" alt="Sad face" class="w-120 h-50 mb-4"/>
+        <p class="text-center text-gray-600 mt-4">There are no products available.</p>
+    </div>
+    {% else %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+        {% for product in products %}
+            {% include 'card_product.html' with product_entry=product %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    </div>
+    {% endblock content %}
+    ```
 
 4. To add the `sad-pathfinder.png` file, we have to make a new subdirectory inside the `static` directory on the `root` of our project called `image`. So, our `png` file would be inside of `static/image` directory.
 
@@ -1428,6 +1438,7 @@ Now we are officially done and we have just made our website more attractive!
 1. **If there are multiple CSS selectors for an HTML element, explain the priority order of these CSS selectors!**
 
     The priority order, just like we can see on Slide 06 about *Web Design Using HTML5 and CSS3.pdf*, determines which styles will apply when multiple CSS selectors target the same HTML element. The order of priority from highest to lowest are:
+
     1. Inline Styles
     2. ID Selectors
     3. Class Selectors, Attribute Selectors, Pseudo-classes
@@ -1437,76 +1448,79 @@ Now we are officially done and we have just made our website more attractive!
 
     Because it ensures that a website or web application can provide and improve user experience across any devices, in our case accross desktop computers to tablets and smartphones. Responsive design also allows content to be flexible without the need for updates and versions of the same website.
 
-    Examples of Application with Responsive Design:
+        Examples of Application with Responsive Design:
         1. Tokopedia
-            Tokopedia adjusts its layout to fit various screen sizes. Even on mobile devices, the screen resolution of let's say and Iphone and Android are different, but Tokopedia manages to provide user with optimized sidebars and navigation options.
+                Tokopedia adjusts its layout to fit various screen sizes. Even on mobile devices, the screen resolution of let's say and Iphone and Android are different, but Tokopedia manages to provide user with optimized sidebars and navigation options.
         2. Twitter (X)
-            Twitter (X) being a Social Media can change its layout based on mobile or dekstop, there are some unofficial sources online that say Twitter (X) can be run on Smartfridges.
-    
-    Examples of Application **without** Responsive Design:
+                Twitter (X) being a Social Media can change its layout based on mobile or dekstop, there are some unofficial sources online that say Twitter (X) can be run on Smartfridges.
+        
+        Examples of Application **without** Responsive Design:
         1. Some University's Faculty Websites
-            Older universities websites might not have responsive layouts. These systems are designed for desktop users, without constant updates, making them difficult to navigate on smaller screens.
+                Older universities websites might not have responsive layouts. These systems are designed for desktop users, without constant updates, making them difficult to navigate on smaller screens.
 
 3. ** Explain the differences between margin, border, and padding, and how to implement these three things!**
 
-        1. Margin : The margin is the outermost space that separates an element from its neighboring elements. It defines the space outside the border of an element. Margins are used to create space between different elements on the page, preventing them from touching or overlapping.
-        Implementation : 
-        ```bash
-                /* Apply the same margin to all sides */
-        .element {
-            margin: 20px;
-        }
+    1. Margin : The margin is the outermost space that separates an element from its neighboring elements. It defines the space outside the border of an element. Margins are used to create space between different elements on the page, preventing them from touching or overlapping.
+    Implementation : 
+        
+    ```bash
+            /* Apply the same margin to all sides */
+    .element {
+        margin: 20px;
+    }
 
-        /* Different margins for each side */
-        .element {
-            margin-top: 10px;
-            margin-right: 15px;
-            margin-bottom: 20px;
-            margin-left: 25px;
-        }
+    /* Different margins for each side */
+    .element {
+        margin-top: 10px;
+        margin-right: 15px;
+        margin-bottom: 20px;
+        margin-left: 25px;
+    }
 
-        /* Center an element horizontally */
-        .centered {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        ```
+    /* Center an element horizontally */
+    .centered {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    ```
 
 
-        2. Border : The border is the line that wraps around the element’s content and padding. It lies between the margin and the padding. Borders are used to visually separate or highlight an element. Borders can have different styles (solid, dashed, dotted, etc.) and can be of varying widths and colors.
-        Implementation : 
-        ```bash
-                /* Simple border for all sides */
-        .element {
-            border: 2px solid black;
-        }
+    2. Border : The border is the line that wraps around the element’s content and padding. It lies between the margin and the padding. Borders are used to visually separate or highlight an element. Borders can have different styles (solid, dashed, dotted, etc.) and can be of varying widths and colors.
+    Implementation : 
+    ```bash
+            /* Simple border for all sides */
+    .element {
+        border: 2px solid black;
+    }
 
-        /* Different borders for each side */
-        .element {
-            border-top: 5px dashed red;
-            border-right: 2px solid blue;
-            border-bottom: 3px dotted green;
-            border-left: 1px solid black;
-        }
-        ```
+    /* Different borders for each side */
+    .element {
+        border-top: 5px dashed red;
+        border-right: 2px solid blue;
+        border-bottom: 3px dotted green;
+        border-left: 1px solid black;
+    }
+    ```
 
-        3. Padding : The padding is the space between the content of an element and its border. It creates space inside the element, pushing the content away from the edges. Padding is used to create space inside an element to make the content look more visually appealing, preventing the text or images from sticking too closely to the border.
-        Implementation :
-        ```bash
-                /* Same padding for all sides */
-        .element {
-            padding: 15px;
-        }
+    3. Padding : The padding is the space between the content of an element and its border. It creates space inside the element, pushing the content away from the edges. Padding is used to create space inside an element to make the content look more visually appealing, preventing the text or images from sticking too closely to the border.
+    Implementation :
+    ```bash
+            /* Same padding for all sides */
+    .element {
+        padding: 15px;
+    }
 
-        /* Different padding for each side */
-        .element {
-            padding-top: 10px;
-            padding-right: 20px;
-            padding-bottom: 15px;
-            padding-left: 25px;
-        }
-        ```
-    Differences :
+    /* Different padding for each side */
+    .element {
+        padding-top: 10px;
+        padding-right: 20px;
+        padding-bottom: 15px;
+        padding-left: 25px;
+    }
+    ```
+
+    **Differences**
+
     Margin : 
         - Controls the space outside the border.
         - Affects the distance between elements.
@@ -1525,11 +1539,15 @@ Now we are officially done and we have just made our website more attractive!
 4. **Explain the concepts of flex box and grid layout along with their uses!**
 
     1. Flexbox (Flexible Box Layout)
+        
         Concept:
+        
         Flexbox is a one-dimensional layout model designed for aligning and distributing space among items in a single direction (either horizontally or vertically). Flexbox is best suited for arranging elements along a row or a column.
     
     2. CSS Grid Layout
-        Concept :
+        
+        Concept:
+        
         Grid is a two-dimensional layout system, meaning it can handle layouts in both rows and columns simultaneously. CSS Grid is more suitable for more complex, grid-based designs, where control over both axes (horizontal and vertical) is required.
 
 5. **How do I impelemt the checklist above step-by-step**
