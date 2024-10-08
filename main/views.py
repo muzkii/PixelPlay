@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from main.forms import ProductForm
 from main.models import Product
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core import serializers
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
@@ -10,14 +10,18 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 import datetime
 
+from django.views.decorators.csrf import csrf_exempt # Assignment 6
+from django.views.decorators.http import require_POST # Assignment 6
+from django.utils.html import strip_tags # Assignment 6
+
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
-    products = Product.objects.filter(user=request.user)
     context = {
         'name': request.user.username,
-        'products': products,
-        'last_login': request.COOKIES.get('last_login')
+        'last_login': request.COOKIES.get('last_login'),
+        'npm': '2306172325',
+        'class' : 'KKI'
     }
 
     return render(request, "main.html", context)
@@ -37,11 +41,35 @@ def create_product(request):
 
     return render(request, "create_product.html", context)
 
+@csrf_exempt
+@require_POST
+def create_product_ajax(request):
+    user = request.user
+    name = strip_tags(request.POST.get("name"))
+    price = request.POST.get("price")
+    description = strip_tags(request.POST.get("description"))
+    category = strip_tags(request.POST.get("category"))
+    stock = request.POST.get("stock")
+    rating = request.POST.get("rating")
+
+    new_product = Product(
+        user=user,
+        name=name,
+        price=price,
+        description=description,
+        category=category,
+        stock=stock,
+        rating=rating
+    )
+    new_product.save()
+
+    return HttpResponse(b"CREATED", status=201)
+
 def edit_product(request, id):
-    # Get mood entry based on id
+    # Get product entry based on id
     product = Product.objects.get(pk = id)
 
-    # Set mood entry as an instance of the form
+    # Set product entry as an instance of the form
     form = ProductForm(request.POST or None, instance=product)
 
     if form.is_valid() and request.method == "POST":
@@ -55,7 +83,7 @@ def edit_product(request, id):
 def delete_product(request, id):
     product = Product.objects.get(pk=id)
     product.delete()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    return redirect('main:show_main')
 
 def register(request):
     form = UserCreationForm()
@@ -82,6 +110,9 @@ def login_user(request):
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
 
+        else:
+            messages.error(request, 'Invalid username or password. Please try again.')
+
     else:
         form = AuthenticationForm(request)
     context = {'form': form}
@@ -92,17 +123,17 @@ def logout_user(request):
     return redirect('main:login')
 
 def show_xml(request):
-    product = Product.objects.all()
+    product = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
 
 def show_json(request):
-    product = Product.objects.all()
+    product = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', product), content_type='application/json')
 
 def show_xml_by_id(request, id):
-    product = Product.objects.get(pk=id)
-    return HttpResponse(serializers.serialize('xml', [product]), content_type='application/xml')
+    product = Product.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
 
 def show_json_by_id(request, id):
-    product = Product.objects.get(pk=id)
-    return HttpResponse(serializers.serialize('json', [product]), content_type='application/json')
+    product = Product.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product), content_type='application/json')

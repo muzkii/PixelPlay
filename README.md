@@ -1570,3 +1570,536 @@ Now we are officially done and we have just made our website more attractive!
 5. **How do I implement the checklist above step-by-step**
 
     Already answered on top of this section 🙏😁
+
+
+
+## Individual Assignment 6
+
+Before we can continue, it's better to implement an error message when the given username and password is incorrect. We can do it as follows:
+
+1. Open `views.py` file inside the `main` directory. Add the following code snippet:
+
+```python
+def login_user(request):
+    ...
+        ...
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            response = HttpResponseRedirect(reverse("main:show_main"))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+
+        else:
+            messages.error(request, 'Invalid username or password. Please try again.')
+        ...
+    ...
+```
+Now we have successfully implement an error message on our login page. We can continue to modify our functions to use AJAX.
+
+### Modify Previous Functions to Use AJAX
+
+#### AJAX GET 
+
+##### Modify codes in data cards 
+
+1. Now, we want to display the product. we can do it with `fetch()` API which later would makes an AJAX GET request. But before we do that, we have to fetch the objects from `/json` endpoint so we have to delete some lines. Open the `views.py` file inside the `main` directory and delete these lines:
+
+    ```python
+    ...
+    products = Product.objects.filter(user=request.user)
+    ...
+        'products': products,
+    ```
+
+    Or so we can see it clearly:
+
+    ```python
+    @login_required(login_url='/login')
+    def show_main(request):
+        products = Product.objects.filter(user=request.user) # DELETE THIS LINE
+        context = {
+            'name': request.user.username,
+            'products': products, # DELETE THIS LINE
+            'last_login': request.COOKIES.get('last_login')
+        }
+
+        return render(request, "main.html", context)
+    ```
+
+##### Retrieve data using AJAX GET 
+
+2. Now we add that line to the `show_json` and `show_xml` functions in `views.py` file. Add as follows:
+
+    ```python
+    product = Product.objects.filter(user=request.user)
+    ```
+
+    So, the entire would be as follows:
+
+    ```bash
+    def show_xml(request):
+        product = Product.objects.filter(user=request.user)
+        return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
+
+    def show_json(request):
+        product = Product.objects.filter(user=request.user)
+        return HttpResponse(serializers.serialize('json', product), content_type='application/json')
+
+    def show_xml_by_id(request, id):
+        product = Product.objects.filter(user=request.user)
+        return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
+
+    def show_json_by_id(request, id):
+        product = Product.objects.filter(user=request.user)
+        return HttpResponse(serializers.serialize('json', product), content_type='application/json')
+    ```
+
+3. Now, since we're going to use modals, we would have to delete the `product_entries` block conditional to display the card_product when it is empty on `main.html` inside the `templates` subdirectory on the `main` directory. Remove this code:
+
+    ```bash
+    {% if not products %}
+        <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+            <img src="{% static 'image/sad-pathfinder.png' %}" alt="Sad face" class="w-120 h-50 mb-4"/>
+            <p class="text-center text-gray-600 mt-4">There are no products available.</p>
+        </div>
+    {% else %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+            {% for product in products %}
+                {% include 'card_product.html' with product_entry=product %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    ```
+
+4. Now, add this code on the same place as the removed as follows:
+
+    ```html
+    ...
+    <div id="product_entry_cards"></div>
+    ...
+    ```
+
+5. Now we have to make this function which makes an AJAX GET request to the URL `{% url 'main:show_json' %}` using the fetch API. By creating a `<script>` block below the file (before `{% endblock content %}`) and create this function as follows:
+
+    ```html
+    <script>
+        async function getProductEntries(){
+            return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+        }
+    </script>
+    ```
+
+##### Implementing an asynchronous refresh function
+
+6. Now create a **new function** on the `<script>` block with the name `refreshProductEntries` to call the `getProductEntries` to fetch the product entries that is used to refresh products data asynchronously as follows:
+
+    ```html
+    async function refreshProductEntries() {
+        document.getElementById("product_entry_cards").innerHTML = "";
+        document.getElementById("product_entry_cards").className = "";
+        const productEntries = await getProductEntries();
+        let htmlString = "";
+        let classNameString = "";
+
+        if (productEntries.length === 0) {
+            classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+            htmlString = `
+                <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                <img src="{% static 'image/sad-pathfinder.png' %}" alt="Sad face" class="w-120 h-50 mb-4"/>
+                <p class="text-center text-gray-600 mt-4">There are no products available.</p>
+                </div>
+            `;
+        } else {
+        classNameString = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full";
+        productEntries.forEach((item) => {
+            htmlString += `
+            <div class="relative break-inside-avoid transition-transform transform hover:scale-105 duration-300 shadow-lg">
+                <div class="relative bg-white border-2 border-teal-300 rounded-lg overflow-hidden h-full">
+                <div class="bg-teal-100 h-40 flex items-center justify-center">
+                    <span class="text-teal-700 font-bold text-2xl">${item.fields.category}</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-2xl text-teal-600 mb-1">${item.fields.name}</h3>
+                    <p class="text-gray-700 text-lg mb-2">Rp${item.fields.price},00</p>
+                    <p class="text-sm text-gray-600">${item.fields.description}</p>
+                    
+                    <div class="mt-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-1">
+                        ${item.fields.rating >= 4.5 ? `<span class="text-yellow-500 font-bold">★ ${item.fields.rating}</span>` : `<span class="text-gray-500 text-sm">Rating: ${item.fields.rating}</span>`}
+                    </div>
+                    <div class="text-sm ${item.fields.stock > 0 ? 'text-green-500' : 'text-red-500'}">
+                        Stock: ${item.fields.stock}
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="absolute top-2 right-2 flex space-x-1">
+                    <a href="/edit-product/${item.pk}" class="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    </a>
+                    <a href="/delete-product/${item.pk}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    </a>
+                </div>
+            </div>
+            `;
+        });
+        }
+        document.getElementById("product_entry_cards").className = classNameString;
+        document.getElementById("product_entry_cards").innerHTML = htmlString;
+    }
+    refreshProductEntries();
+    </script>
+    ```
+
+7. Now we have to create the modal as a form to add our products, since we're using Tailwind, we can implement it on our app. Place the following code below the `div` with the `id` `product_entry_cards` earlier as follows:
+
+    ```html
+    ...
+    <div id="crudModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
+        <div id="crudModalContent" class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 bg-teal-600 text-white rounded-t-lg">
+            <h3 class="text-xl font-semibold">
+                Add New Product
+                </h3>
+                <button type="button" class="text-white-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" id="closeModalBtn">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="px-6 py-4 space-y-6 form-style">
+                <form id="productForm" class="space-y-6">
+                    <div class="flex flex-col">
+                        <label for="name" class="mb-2 font-semibold text-gray-700">Name</label>
+                        <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-teal-500" placeholder="Enter product name" required>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="price" class="mb-2 font-semibold text-gray-700">Price</label>
+                        <input type="number" id="price" name="price" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-teal-500" placeholder="Enter product price" required>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="description" class="mb-2 font-semibold text-gray-700">Description</label>
+                        <textarea id="description" name="description" rows="3" class="mt-1 block w-full resize-none border border-gray-300 rounded-md p-2 hover:border-teal-500" placeholder="Enter product description" required></textarea>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="category" class="mb-2 font-semibold text-gray-700">Category</label>
+                        <input type="text" id="category" name="category" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-teal-500" placeholder="Enter product category" required>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="stock" class="mb-2 font-semibold text-gray-700">Stock</label>
+                        <input type="number" id="stock" name="stock" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-teal-500" placeholder="Enter product stock" required>
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="rating" class="mb-2 font-semibold text-gray-700">Rating</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" step="0.1" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-teal-500" placeholder="Enter product rating" required>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end">
+                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg" id="cancelButton">Cancel</button>
+                <button type="submit" id="submitProductEntry" form="productForm" class="bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-500 transition duration-300 py-2 px-4 rounded-lg">Save</button>
+            </div>
+        </div>
+    </div>
+    ...
+    ```
+
+8. Now in order for our modal to work, we need to add the following JavaScript functions. We can do it by adding the following codes, still in `main.html` file:
+
+    ```html
+    const modal = document.getElementById('crudModal');
+    const modalContent = document.getElementById('crudModalContent');
+
+    function showModal() {
+        modal.classList.remove('hidden'); 
+        setTimeout(() => {
+        modalContent.classList.remove('opacity-0', 'scale-95');
+        modalContent.classList.add('opacity-100', 'scale-100');
+        }, 50); 
+    }
+
+    function hideModal() {
+        modalContent.classList.remove('opacity-100', 'scale-100');
+        modalContent.classList.add('opacity-0', 'scale-95');
+
+        setTimeout(() => {
+        modal.classList.add('hidden');
+        }, 150); 
+    }
+
+    document.getElementById("cancelButton").addEventListener("click", hideModal);
+    document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+    ...
+    ```
+
+
+#### AJAX POST
+
+##### Create a button that opens a modal 
+
+1. Now add these following code to implement a button for our product entry:
+
+    ```html
+    ...
+    <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+      Add New Product
+    </button>
+    ...
+    ```
+
+##### Create a new view function to add a new mood entry
+
+2. By modifying previous functions, to keep our previous functions for future uses, it's better if we create a new function on `views.py` inside the `main` directory to add our products with AJAX. First, we have to import these decorators as follow:
+
+    ```python
+    ...
+    from django.views.decorators.csrf import csrf_exempt
+    from django.views.decorators.http import require_POST
+    ```
+
+3. Create a new functions, still in the same `views.py` file, called `create_product_ajax` that takes `request` as a parameter. Use the decorators that we have imported earlier and fill in the function as follows:
+
+    ```python
+    ...
+    @csrf_exempt
+    @require_POST
+    def create_product_ajax(request):
+        user = request.user
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        category = request.POST.get("category")
+        stock = request.POST.get("stock")
+        rating = request.POST.get("rating")
+
+        new_product = Product(
+            user=user,
+            name=name,
+            price=price,
+            description=description,
+            category=category,
+            stock=stock,
+            rating=rating
+        )
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+    ```
+
+##### Create a `/create-ajax/` path
+
+4. Since we're creating a new function within `views.py`, don't forget to add them on `urls.py` file inside the `main` directory and import the created function with:
+
+    ```python
+    from main.views import ..., create_product_ajax
+    ...
+    ```
+
+
+5. Now add the URL path with:
+
+    ```python
+    ...
+    urlpatterns = [
+        ...,
+        path('create-product-ajax', create_product_ajax, name='create_product_ajax')
+    ]
+    ```
+
+##### Connect the form inside the modal, asynchronous refresh is performed by `refreshProductEntries()`
+
+6. Next, is to implement adding AJAX POST request, by creating a new JavaScript function to add the data based on the input. Open `main.html` and inside the `<script>` block with the name `addProductEntry` and fill the function as follows:
+
+    ```html
+    <script>
+        function addProductEntry() {
+            fetch("{% url 'main:create_product_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#productForm')),
+            })
+            .then(response => refreshProductEntries())
+
+            document.getElementById("productForm").reset(); 
+            document.querySelector("[data-modal-toggle='crudModal']").click();
+
+            return false;
+        }
+    ...
+    </script>
+    ```
+
+7. Don't forget to add an event listener to the form in the modal to run the `addProductEntry()` function that we have made earlier. When the form is submitted, the default form submission is prevented using `e.preventDefault()`
+
+    ```html
+    <script>
+    ...
+        document.getElementById("productForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            addProductEntry();
+        })
+    </script>
+
+
+
+#### Secureing AJAX POST and GET
+
+Now to secure our website when doing AJAX GET and POST, we can take an example as Cross Site Scripting (XSS). By doing these following steps
+
+1. On `views.py` file and `forms.py` file inside the `main` directory, add imports to use `strip_tags` that would help us on removing all HTML tags as follows:
+
+    ```python
+    ...
+    from django.utils.html import strip_tags
+    ```
+
+2. Still on `views.py`, we want to modify our `create_product_ajax` function to use the `strip_tags` on our data before it is inserted. We can modify it as follows:
+
+    ```python
+    @csrf_exempt
+    @require_POST
+    def create_product_ajax(request):
+        user = request.user
+        name = strip_tags(request.POST.get("name"))
+        price = request.POST.get("price")
+        description = strip_tags(request.POST.get("description"))
+        category = strip_tags(request.POST.get("category"))
+        stock = request.POST.get("stock")
+        rating = request.POST.get("rating")
+        ...
+    ```
+
+3. Now, we also want to do the same when a user edits their product. So, on the `ProductForm` class in the `forms.py` file inside `main` directory, add the following methods:
+
+    ```python
+    ...
+    class ProductForm(ModelForm):
+        ...
+
+        def clean_name(self):
+            name = self.cleaned_data['name']
+            return strip_tags(name)
+        
+        def clean_description(self):
+            description = self.cleaned_data['description']
+            return strip_tags(description)
+        
+        def clean_category(self):
+            category = self.cleaned_data['category']
+            return strip_tags(category)
+    ```
+
+##### Sanitizing Data with DOMPurify
+
+4. Now by following tutorial, we can "clean" all the old data. You can do it by opening the `main.html` file and add the following code to the `meta block`:
+
+    ```html
+    {% block meta %}
+    ...
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+    ...
+    {% endblock meta %}
+    ```
+
+2. Next is to add the following code to `resfreshProductEntries()` function to use the DOM Purify
+
+    ```html
+    productEntries.forEach((item) => {
+        const name = DOMPurify.sanitize(item.fields.name);
+        const description = DOMPurify.sanitize(item.fields.description);
+        const category = DOMPurify.sanitize(item.fields.category);
+        htmlString += `
+            <div class="relative break-inside-avoid transition-transform transform hover:scale-105 duration-300 shadow-lg">
+                <div class="relative bg-white border-2 border-teal-300 rounded-lg overflow-hidden h-full">
+                <div class="bg-teal-100 h-40 flex items-center justify-center">
+                    <span class="text-teal-700 font-bold text-2xl">${category}</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-2xl text-teal-600 mb-1">${name}</h3>
+                    <p class="text-gray-700 text-lg mb-2">Rp${item.fields.price},00</p>
+                    <p class="text-sm text-gray-600">${description}</p>
+                    
+                    <div class="mt-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-1">
+                        ${item.fields.rating >= 4.5 ? `<span class="text-yellow-500 font-bold">★ ${item.fields.rating}</span>` : `<span class="text-gray-500 text-sm">Rating: ${item.fields.rating}</span>`}
+                    </div>
+                    <div class="text-sm ${item.fields.stock > 0 ? 'text-green-500' : 'text-red-500'}">
+                        Stock: ${item.fields.stock}
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="absolute top-2 right-2 flex space-x-1">
+                    <a href="/edit-product/${item.pk}" class="bg-orange-500 hover:bg-orange-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    </a>
+                    <a href="/delete-product/${item.pk}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    </a>
+                </div>
+            </div>
+            `;
+        });
+        }
+        document.getElementById("product_entry_cards").className = classNameString;
+        document.getElementById("product_entry_cards").innerHTML = htmlString;
+    }
+    ```
+
+    We have successfully secured our website from an XSS attack
+
+### Answers to the Questions
+
+1. **Explain the benefits of using JavaScript in developing web applications!**
+
+-   Interactivity: JavaScript enhances user experience by enabling interactive features like form validation, dynamic content updates, and animations without reloading the page.
+-   Client-Side Processing: JavaScript allows processing to be done on the client-side (in the browser), reducing the load on the server and providing faster responses for the user.
+-   Cross-Browser Compatibility: JavaScript runs in all modern browsers, ensuring consistent functionality across different platforms and devices.
+-   Asynchronous Operations: Using technologies like AJAX and Fetch, JavaScript can send and receive data from a server without refreshing the page, improving user experience with real-time updates.
+-   Rich Ecosystem: JavaScript has a vast number of libraries and frameworks (e.g., React, Vue, Angular) that make building complex web applications easier and faster.
+-   Extensibility with APIs: JavaScript can integrate with external APIs, enabling functionality like payment processing, social media sharing, and retrieving data from external services.
+
+2. **Explain why we need to use await when we call `fetch()`! What would happen if we don't use `await`?**
+
+    `fetch()` is used to make network requests and returns a Promise. By using await, we can pause the execution of the function until the Promise resolves, meaning we wait for the response from the server before proceeding to the next line of code. This ensures that we get the actual response data instead of just a pending Promise.
+
+    What Happens If We Don't Use await:
+
+    If we don't use await, the execution continues immediately, and instead of the resolved data from the fetch() call, we get a Promise object. This can lead to problems, such as trying to access response data before it is available, leading to errors or undefined behavior.
+
+3. **Why do we need to use the `csrf_exempt` decorator on the view used for AJAX `POST`?**
+
+    The `csrf_exempt` decorator is used to disable CSRF (Cross-Site Request Forgery) protection for a specific view. Django by default protects against CSRF attacks by requiring a CSRF token in POST requests, but AJAX `POST` requests often don't automatically include this token unless explicitly set in the JavaScript code.
+
+    By using `csrf_exempt`, you avoid the error where Django rejects the request due to the missing CSRF token. However, it's important to handle this cautiously, as disabling CSRF protection can open up vulnerabilities if not done properly.
+
+4. **On this week's tutorial, the user input sanitization is done in the back-end as well. Why can't the sanitization be done just in the front-end?**
+
+    Sanitizing user input on the front-end is important, but it is not sufficient on its own. Here are the reasons why sanitization must also be done on the back-end:
+
+    Reasons for Back-End Sanitization
+
+-   Client-Side Manipulation:
+
+    Users can bypass front-end validation and sanitization by manipulating the client-side code using browser developer tools or other methods Malicious users can disable JavaScript or modify the JavaScript code to remove sanitization checks.
+    
+-   Security:
+
+    The back-end is the final gatekeeper before data is stored in the database or processed further. Relying solely on front-end sanitization leaves the application vulnerable to attacks such as Cross-Site Scripting (XSS), SQL Injection, and other injection attacks, just like we did on the tutorial and assignment.
+    
+5. **How do I implemented the checklist above**
+
+    Already answered on top of this section 🙏😁
