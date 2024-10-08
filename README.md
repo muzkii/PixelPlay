@@ -1637,7 +1637,7 @@ Now we have successfully implement an error message on our login page. We can co
 
     So, the entire would be as follows:
 
-    ```bash
+    ```python
     def show_xml(request):
         product = Product.objects.filter(user=request.user)
         return HttpResponse(serializers.serialize('xml', product), content_type='application/xml')
@@ -1657,7 +1657,7 @@ Now we have successfully implement an error message on our login page. We can co
 
 3. Now, since we're going to use modals, we would have to delete the `product_entries` block conditional to display the card_product when it is empty on `main.html` inside the `templates` subdirectory on the `main` directory. Remove this code:
 
-    ```bash
+    ```html
     {% if not products %}
         <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
             <img src="{% static 'image/sad-pathfinder.png' %}" alt="Sad face" class="w-120 h-50 mb-4"/>
@@ -1694,7 +1694,7 @@ Now we have successfully implement an error message on our login page. We can co
 
 6. Now create a **new function** on the `<script>` block with the name `refreshProductEntries` to call the `getProductEntries` to fetch the product entries that is used to refresh products data asynchronously as follows:
 
-    ```html
+    ```javascript
     async function refreshProductEntries() {
         document.getElementById("product_entry_cards").innerHTML = "";
         document.getElementById("product_entry_cards").className = "";
@@ -1816,7 +1816,7 @@ Now we have successfully implement an error message on our login page. We can co
 
 8. Now in order for our modal to work, we need to add the following JavaScript functions. We can do it by adding the following codes, still in `main.html` file:
 
-    ```html
+    ```javascript
     const modal = document.getElementById('crudModal');
     const modalContent = document.getElementById('crudModalContent');
 
@@ -1920,7 +1920,7 @@ Now we have successfully implement an error message on our login page. We can co
 
 6. Next, is to implement adding AJAX POST request, by creating a new JavaScript function to add the data based on the input. Open `main.html` and inside the `<script>` block with the name `addProductEntry` and fill the function as follows:
 
-    ```html
+    ```javascript
     <script>
         function addProductEntry() {
             fetch("{% url 'main:create_product_ajax' %}", {
@@ -2012,7 +2012,7 @@ Now to secure our website when doing AJAX GET and POST, we can take an example a
 
 2. Next is to add the following code to `resfreshProductEntries()` function to use the DOM Purify
 
-    ```html
+    ```javascript
     productEntries.forEach((item) => {
         const name = DOMPurify.sanitize(item.fields.name);
         const description = DOMPurify.sanitize(item.fields.description);
@@ -2065,12 +2065,29 @@ Now to secure our website when doing AJAX GET and POST, we can take an example a
 
 1. **Explain the benefits of using JavaScript in developing web applications!**
 
--   Interactivity: JavaScript enhances user experience by enabling interactive features like form validation, dynamic content updates, and animations without reloading the page.
--   Client-Side Processing: JavaScript allows processing to be done on the client-side (in the browser), reducing the load on the server and providing faster responses for the user.
--   Cross-Browser Compatibility: JavaScript runs in all modern browsers, ensuring consistent functionality across different platforms and devices.
--   Asynchronous Operations: Using technologies like AJAX and Fetch, JavaScript can send and receive data from a server without refreshing the page, improving user experience with real-time updates.
--   Rich Ecosystem: JavaScript has a vast number of libraries and frameworks (e.g., React, Vue, Angular) that make building complex web applications easier and faster.
--   Extensibility with APIs: JavaScript can integrate with external APIs, enabling functionality like payment processing, social media sharing, and retrieving data from external services.
+    - Interactivity: 
+
+        JavaScript enhances user experience by enabling interactive features like form validation, dynamic content updates, and animations without reloading the page.
+
+    - Client-Side Processing: 
+    
+        JavaScript allows processing to be done on the client-side (in the browser), reducing the load on the server and providing faster responses for the user.4
+
+    - Cross-Browser Compatibility: 
+    
+        JavaScript runs in all modern browsers, ensuring consistent functionality across different platforms and devices.
+
+    - Asynchronous Operations: 
+    
+        Using technologies like AJAX and Fetch, JavaScript can send and receive data from a server without refreshing the page, improving user experience with real-time updates.
+
+    - Rich Ecosystem: 
+    
+        JavaScript has a vast number of libraries and frameworks (e.g., React, Vue, Angular) that make building complex web applications easier and faster.
+
+    - Extensibility with APIs: 
+    
+        JavaScript can integrate with external APIs, enabling functionality like payment processing, social media sharing, and retrieving data from external services.
 
 2. **Explain why we need to use await when we call `fetch()`! What would happen if we don't use `await`?**
 
@@ -2090,15 +2107,15 @@ Now to secure our website when doing AJAX GET and POST, we can take an example a
 
     Sanitizing user input on the front-end is important, but it is not sufficient on its own. Here are the reasons why sanitization must also be done on the back-end:
 
-    Reasons for Back-End Sanitization
+    **Reasons for Back-End Sanitization**
 
--   Client-Side Manipulation:
+    - Client-Side Manipulation:
 
-    Users can bypass front-end validation and sanitization by manipulating the client-side code using browser developer tools or other methods Malicious users can disable JavaScript or modify the JavaScript code to remove sanitization checks.
-    
--   Security:
+        Users can bypass front-end validation and sanitization by manipulating the client-side code using browser developer tools or other methods Malicious users can disable JavaScript or modify the JavaScript code to remove sanitization checks.
+        
+    - Security:
 
-    The back-end is the final gatekeeper before data is stored in the database or processed further. Relying solely on front-end sanitization leaves the application vulnerable to attacks such as Cross-Site Scripting (XSS), SQL Injection, and other injection attacks, just like we did on the tutorial and assignment.
+        The back-end is the final gatekeeper before data is stored in the database or processed further. Relying solely on front-end sanitization leaves the application vulnerable to attacks such as Cross-Site Scripting (XSS), SQL Injection, and other injection attacks, just like we did on the tutorial and assignment.
     
 5. **How do I implemented the checklist above**
 
