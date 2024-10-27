@@ -41,6 +41,7 @@ def create_product(request):
 
     return render(request, "create_product.html", context)
 
+
 @csrf_exempt
 @require_POST
 def create_product_ajax(request):
